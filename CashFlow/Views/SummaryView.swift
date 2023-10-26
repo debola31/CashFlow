@@ -11,10 +11,16 @@ struct SummaryView: View {
     @State var transfer: Transfer?
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 if let activeProfile = user.activeProfile {
-                    Text("Profile: \(activeProfile.name)")
+                    Section("Profile") {
+                        NavigationLink {
+                            ProfileView()
+                        } label: {
+                            Label(activeProfile.name, systemImage: "person")
+                        }
+                    }
 
                     Text("Funds: \(activeProfile.availableFunds)")
                     Button("Deposit") {
@@ -31,7 +37,6 @@ struct SummaryView: View {
                 }
             }
             .navigationTitle("CashFlow")
-            
 
         }.sheet(item: $transfer) { transfer in
             TransferView(transfer: transfer)

@@ -12,37 +12,36 @@ struct ProfileView: View {
 
     var body: some View {
         List {
-            Section("User Information") {
-                HStack {
-                    Text("Profile Name:")
-                    Spacer()
-                    Text(user.name)
-                }
-                HStack {
-                    Text("Email:")
-                    Spacer()
-                    Text(user.email)
-                }
-                
-                HStack {
-                    Text("Number:")
-                    Spacer()
-                    Text(user.phoneNumber, format: .number)
-                }
-            }
+//            Section("User Information") {
+//                HStack {
+//                    Text("Profile Name:")
+//                    Spacer()
+//                    Text(user.name)
+//                }
+//                HStack {
+//                    Text("Email:")
+//                    Spacer()
+//                    Text(user.email)
+//                }
+//                
+//                HStack {
+//                    Text("Number:")
+//                    Spacer()
+//                    Text(user.phoneNumber, format: .number)
+//                }
+//            }
             
             Section("Profile Selection") {
-                Picker("Active Profile", selection: $user.activeProfile) {
+                Picker("Select Active Profile", selection: $user.activeProfile) {
                     ForEach(user.profiles) { profile in
                         Text(profile.name)
                     }
                 }
+                NavigationLink("Add New Profile") {
+                    NewProfileView()
+                }
             }
-            
-            Section("Profile Info") {
-                Text("Placeholder for Profile Picker")
-                Text("Add New Profile")
-            }
+
             
             if let profile = user.activeProfile {
                 Section("Bank Information") {

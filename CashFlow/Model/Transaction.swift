@@ -9,8 +9,11 @@ import Foundation
 
 struct Transaction: Hashable {
     enum types: String {
-        case pay, dash, charge, collect
+        case pay, dash, charge, collect, refund
     }
 
     var amount: Double
+    var complete = false
+
+    static let example = Transaction(amount: 0)
 }

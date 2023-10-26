@@ -12,13 +12,13 @@ struct UserProfile: Identifiable, Hashable {
         lhs.id == rhs.id
     }
 
-    enum types: String, Hashable {
+    enum Types: String, Hashable, CaseIterable {
         case business, individual
     }
 
     var id = UUID()
     var name: String = ""
-    var type: types = .individual
+    var type: Types = .individual
     var availableFunds: Double = 0
     var accountHistory: [Transaction] = []
     let currencyFormatter: NumberFormatter = {
@@ -38,8 +38,5 @@ struct UserProfile: Identifiable, Hashable {
     var bankAccounts = [BankAccount]()
     var primaryAccount: BankAccount?
 
-    static let example = UserProfile(name: "John Doe")
-
-    static let nilProfile = UserProfile(name: "John Doe")
-    static let addNewProfile = UserProfile(name: "Add New")
+    static let example = UserProfile(name: "John Doe's")
 }

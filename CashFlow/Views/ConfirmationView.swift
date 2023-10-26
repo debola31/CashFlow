@@ -8,15 +8,22 @@
 import SwiftUI
 
 struct ConfirmationView: View {
+    @Binding var navPath: NavigationPath
+    var transaction: Transaction
     var body: some View {
         VStack {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            Button("Slide to Confirm") {}
-            Button("View Receipt") {}
+            Text("Hello, World!")
+            Button("Slide to Confirm") {
+                navPath = NavigationPath()
+            }
+            Button("View Receipt") {
+                let record = Record(transaction: transaction)
+                navPath.append(record)
+            }
         }
     }
 }
 
 #Preview {
-    ConfirmationView()
+    ConfirmationView(navPath: .constant(NavigationPath()), transaction: Transaction.example)
 }

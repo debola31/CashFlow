@@ -17,5 +17,8 @@ class User: ObservableObject {
 
     init(id: UUID = UUID(), activeProfile: UserProfile? = nil) {
         self.activeProfile = activeProfile
+        if let profile = activeProfile {
+            self.profiles.append(profile)
+        }
     }
 }

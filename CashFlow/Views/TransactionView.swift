@@ -9,9 +9,10 @@ import CodeScanner
 import SwiftUI
 
 struct TransactionView: View {
-    @EnvironmentObject var user: User
     let transactionType: Transaction.types
+    @EnvironmentObject var user: User
     @State var isShowingScanner = false
+    @State var navPath = NavigationPath()
     var actionText: String {
         switch transactionType {
         case .pay:
@@ -21,7 +22,9 @@ struct TransactionView: View {
         case .collect:
             return "Scan Dash Code"
         case .charge:
-            return ""
+            return "Generate Service Items"
+        case .refund:
+            return "Scan Refunde Code"
         }
     }
 
@@ -30,6 +33,8 @@ struct TransactionView: View {
         switch result {
         case .success(let result):
             print(result)
+            print("success")
+            navPath.append(Transaction.example)
 //            let details = result.string.components(separatedBy: "\n")
 //            guard details.count == 2 else { return }
 //
@@ -44,7 +49,7 @@ struct TransactionView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             Form {
                 Button(actionText) {
                     isShowingScanner = true
@@ -65,6 +70,12 @@ struct TransactionView: View {
                     Text("Transactions")
                 }
             }
+            .navigationDestination(for: Transaction.self) { transaction in
+                ConfirmationView(navPath: $navPath, transaction: transaction)
+            }
+            .navigationDestination(for: Record.self, destination: { record in
+                ReceiptView(navPath: $navPath, record: record)
+            })
             .navigationTitle(transactionType.rawValue.capitalized)
             .sheet(isPresented: $isShowingScanner) {
                 let randomInt = Int.random(in: 1 ... 1000)
