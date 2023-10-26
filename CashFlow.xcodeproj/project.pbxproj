@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0652F3812AE89EFB00052C8D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0652F3802AE89EFB00052C8D /* User.swift */; };
+		0652F3832AE89F1D00052C8D /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0652F3822AE89F1D00052C8D /* UserProfile.swift */; };
+		0652F3852AE8A22100052C8D /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0652F3842AE8A22100052C8D /* Transaction.swift */; };
+		3054F6172AE97DE8001F9FB6 /* TransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F6162AE97DE8001F9FB6 /* TransferView.swift */; };
+		3054F6192AE9838B001F9FB6 /* Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F6182AE9838B001F9FB6 /* Transfer.swift */; };
+		3054F61B2AE9925C001F9FB6 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F61A2AE9925C001F9FB6 /* ProfileView.swift */; };
+		3054F61F2AE994BD001F9FB6 /* BankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F61E2AE994BD001F9FB6 /* BankAccount.swift */; };
+		3054F6212AE9E2CB001F9FB6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F6202AE9E2CB001F9FB6 /* ImagePicker.swift */; };
+		3054F6242AE9E32F001F9FB6 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 3054F6232AE9E32F001F9FB6 /* CodeScanner */; };
+		309476B02AE9F3A700727706 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309476AF2AE9F3A700727706 /* ConfirmationView.swift */; };
 		30B11EF12AE8842F00ACBB90 /* CashFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11EF02AE8842F00ACBB90 /* CashFlowApp.swift */; };
 		30B11EF32AE8842F00ACBB90 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11EF22AE8842F00ACBB90 /* ContentView.swift */; };
 		30B11EF52AE8843100ACBB90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30B11EF42AE8843100ACBB90 /* Assets.xcassets */; };
@@ -14,6 +24,9 @@
 		30B11F022AE8843100ACBB90 /* CashFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F012AE8843100ACBB90 /* CashFlowTests.swift */; };
 		30B11F0C2AE8843100ACBB90 /* CashFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F0B2AE8843100ACBB90 /* CashFlowUITests.swift */; };
 		30B11F0E2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F0D2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift */; };
+		30B11F1B2AE884E700ACBB90 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1A2AE884E700ACBB90 /* Model.swift */; };
+		30B11F1D2AE8898D00ACBB90 /* TransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1C2AE8898D00ACBB90 /* TransactionView.swift */; };
+		30B11F1F2AE889F000ACBB90 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1E2AE889F000ACBB90 /* SummaryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +47,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0652F3802AE89EFB00052C8D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0652F3822AE89F1D00052C8D /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		0652F3842AE8A22100052C8D /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		3054F6162AE97DE8001F9FB6 /* TransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferView.swift; sourceTree = "<group>"; };
+		3054F6182AE9838B001F9FB6 /* Transfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transfer.swift; sourceTree = "<group>"; };
+		3054F61A2AE9925C001F9FB6 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		3054F61E2AE994BD001F9FB6 /* BankAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccount.swift; sourceTree = "<group>"; };
+		3054F6202AE9E2CB001F9FB6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		309476AF2AE9F3A700727706 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		30B11EED2AE8842F00ACBB90 /* CashFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CashFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30B11EF02AE8842F00ACBB90 /* CashFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowApp.swift; sourceTree = "<group>"; };
 		30B11EF22AE8842F00ACBB90 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +66,9 @@
 		30B11F072AE8843100ACBB90 /* CashFlowUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CashFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30B11F0B2AE8843100ACBB90 /* CashFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowUITests.swift; sourceTree = "<group>"; };
 		30B11F0D2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		30B11F1A2AE884E700ACBB90 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		30B11F1C2AE8898D00ACBB90 /* TransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionView.swift; sourceTree = "<group>"; };
+		30B11F1E2AE889F000ACBB90 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3054F6242AE9E32F001F9FB6 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +97,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0652F37E2AE89ED900052C8D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				30B11EF22AE8842F00ACBB90 /* ContentView.swift */,
+				3054F61A2AE9925C001F9FB6 /* ProfileView.swift */,
+				30B11F1C2AE8898D00ACBB90 /* TransactionView.swift */,
+				30B11F1E2AE889F000ACBB90 /* SummaryView.swift */,
+				309476AF2AE9F3A700727706 /* ConfirmationView.swift */,
+				3054F6162AE97DE8001F9FB6 /* TransferView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0652F37F2AE89EE200052C8D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				30B11F1A2AE884E700ACBB90 /* Model.swift */,
+				3054F61E2AE994BD001F9FB6 /* BankAccount.swift */,
+				0652F3842AE8A22100052C8D /* Transaction.swift */,
+				3054F6182AE9838B001F9FB6 /* Transfer.swift */,
+				0652F3802AE89EFB00052C8D /* User.swift */,
+				3054F6202AE9E2CB001F9FB6 /* ImagePicker.swift */,
+				0652F3822AE89F1D00052C8D /* UserProfile.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		30B11EE42AE8842F00ACBB90 = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +148,8 @@
 			isa = PBXGroup;
 			children = (
 				30B11EF02AE8842F00ACBB90 /* CashFlowApp.swift */,
-				30B11EF22AE8842F00ACBB90 /* ContentView.swift */,
+				0652F37E2AE89ED900052C8D /* Views */,
+				0652F37F2AE89EE200052C8D /* Model */,
 				30B11EF42AE8843100ACBB90 /* Assets.xcassets */,
 				30B11EF62AE8843100ACBB90 /* Preview Content */,
 			);
@@ -143,6 +197,9 @@
 			dependencies = (
 			);
 			name = CashFlow;
+			packageProductDependencies = (
+				3054F6232AE9E32F001F9FB6 /* CodeScanner */,
+			);
 			productName = CashFlow;
 			productReference = 30B11EED2AE8842F00ACBB90 /* CashFlow.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +272,9 @@
 				Base,
 			);
 			mainGroup = 30B11EE42AE8842F00ACBB90;
+			packageReferences = (
+				3054F6222AE9E32F001F9FB6 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			productRefGroup = 30B11EEE2AE8842F00ACBB90 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,7 +317,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3054F6212AE9E2CB001F9FB6 /* ImagePicker.swift in Sources */,
+				30B11F1B2AE884E700ACBB90 /* Model.swift in Sources */,
+				3054F61F2AE994BD001F9FB6 /* BankAccount.swift in Sources */,
+				3054F6172AE97DE8001F9FB6 /* TransferView.swift in Sources */,
+				30B11F1D2AE8898D00ACBB90 /* TransactionView.swift in Sources */,
+				0652F3852AE8A22100052C8D /* Transaction.swift in Sources */,
+				0652F3832AE89F1D00052C8D /* UserProfile.swift in Sources */,
+				0652F3812AE89EFB00052C8D /* User.swift in Sources */,
+				3054F6192AE9838B001F9FB6 /* Transfer.swift in Sources */,
+				309476B02AE9F3A700727706 /* ConfirmationView.swift in Sources */,
+				30B11F1F2AE889F000ACBB90 /* SummaryView.swift in Sources */,
 				30B11EF32AE8842F00ACBB90 /* ContentView.swift in Sources */,
+				3054F61B2AE9925C001F9FB6 /* ProfileView.swift in Sources */,
 				30B11EF12AE8842F00ACBB90 /* CashFlowApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,11 +497,14 @@
 				DEVELOPMENT_TEAM = THYYA3KQJV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to Scan QR Codes";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -454,11 +529,14 @@
 				DEVELOPMENT_TEAM = THYYA3KQJV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to Scan QR Codes";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -588,6 +666,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3054F6222AE9E32F001F9FB6 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3054F6232AE9E32F001F9FB6 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3054F6222AE9E32F001F9FB6 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30B11EE52AE8842F00ACBB90 /* Project object */;
 }
