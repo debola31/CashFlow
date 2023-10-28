@@ -10,9 +10,9 @@ import SwiftUI
 
 extension CBUUID {
     static let service = CBUUID(string: "1337")
-    static let writeResponseCharacteristic = CBUUID(string: "0001")
-    static let writeNoResponseCharacteristic = CBUUID(string: "0002")
-    static let writeBothResponseAndNoResponseCharacteristic = CBUUID(string: "0003")
+//    static let writeResponseCharacteristic = CBUUID(string: "0001")
+//    static let service = CBUUID(string: UUID().uuidString)
+    static var writeResponseCharacteristic = CBUUID(string: UUID().uuidString)
 }
 
 class CentralDevice: ObservableObject {
