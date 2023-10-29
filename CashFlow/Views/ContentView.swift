@@ -8,81 +8,63 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var user = User(activeProfile: UserProfile.example)
+    @StateObject var user: User
+    @StateObject var centralDevice = CentralDevice()
+    @State var profileChange = false
+
+    init() {
+        if let data = UserDefaults.standard.data(forKey: UserProfile.saveKey) {
+            if let decoded = try? JSONDecoder().decode(User.self, from: data) {
+                _user = StateObject(wrappedValue: decoded)
+                return
+            }
+        }
+        _user = StateObject(wrappedValue: User())
+    }
+
     var body: some View {
         TabView {
-            if let profile = user.activeProfile {
-                SummaryView()
+            SummaryView(profileChange: $profileChange)
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+
+            if user.activeProfile.type == .individual {
+                TransactionView(transactionType: .pay)
                     .tabItem {
-                        Label("Home", systemImage: "house")
+                        Label("Pay", systemImage: "dollarsign")
                     }
 
-                if profile.type == .individual {
-                    TransactionView(transactionType: .pay)
-                        .tabItem {
-                            Label("Pay", systemImage: "dollarsign")
-                        }
+                TransactionView(transactionType: .dash)
+                    .tabItem {
+                        Label("Dash", systemImage: "arrow.up.right.square.fill")
+                    }
 
-                    TransactionView(transactionType: .dash)
-                        .tabItem {
-                            Label("Dash", systemImage: "arrow.up.right.square.fill")
-                        }
+                TransactionView(transactionType: .collect)
+                    .tabItem {
+                        Label("Collect", systemImage: "hands.sparkles.fill")
+                    }
+            } else if user.activeProfile.type == .business {
+                TransactionView(transactionType: .charge)
+                    .tabItem {
+                        Label("Charge", systemImage: "dollarsign")
+                    }
 
-                    TransactionView(transactionType: .collect)
-                        .tabItem {
-                            Label("Collect", systemImage: "hands.sparkles.fill")
-                        }
-                } else if profile.type == .business {
-                    TransactionView(transactionType: .charge)
-                        .tabItem {
-                            Label("Charge", systemImage: "dollarsign")
-                        }
-
-                    TransactionView(transactionType: .refund)
-                        .tabItem {
-                            Label("Charge", systemImage: "dollarsign.arrow.circlepath")
-                        }
-                }
-            } else {
-                ProfileView()
+                TransactionView(transactionType: .refund)
+                    .tabItem {
+                        Label("Refund", systemImage: "dollarsign.arrow.circlepath")
+                    }
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink {
-                    ProfileView()
-                } label: {
-                    Label("User", systemImage: "person.circle")
-                }
-            }
-        }
+        .id(user.activeProfile.type)
         .environmentObject(user)
+        .environmentObject(centralDevice)
+        .sheet(isPresented: $profileChange) {
+            ProfileView(profileChange: $profileChange)
+                .environmentObject(user)
+        }
     }
 }
-
-// struct ContentView: View {
-//    @State private var presentedNumbers = [Int]()
-//
-//    var body: some View {
-//        NavigationStack(path: $presentedNumbers) {
-//            List(1..<50) { i in
-//                NavigationLink(value: i) {
-//                    Label("Row \(i)", systemImage: "\(i).circle")
-//                }
-//            }
-//            .navigationDestination(for: Int.self) { i in
-//                VStack {
-//                    Text("Detail \(i)")
-//
-//                    Button("Go to Next") {
-//                        presentedNumbers.append(i + 1)
-//                    }
-//                }
-//            }
-//            .navigationTitle("Navigation")
-//        }
-//    }
-// }
 
 #Preview {
     ContentView()

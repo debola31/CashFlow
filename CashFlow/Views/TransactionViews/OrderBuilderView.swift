@@ -14,10 +14,7 @@ struct OrderBuilderView: View {
     @State private var itemCounts = [Int]()
     var countOptions = 0 ... 9
     var availableItems: [MenuItem] {
-        if let profile = user.activeProfile {
-            return profile.menuItems
-        }
-        return []
+        user.activeProfile.menuItems
     }
 
     var body: some View {
@@ -27,8 +24,7 @@ struct OrderBuilderView: View {
                     dismiss()
                 }.disabled(order.isEmpty)
                 Button("Clear Cart") {
-                    guard let profile = user.activeProfile else { return }
-                    itemCounts = Array(repeating: 0, count: profile.menuItems.count)
+                    itemCounts = Array(repeating: 0, count: user.activeProfile.menuItems.count)
                     order.clear()
                 }.disabled(order.isEmpty)
             }
@@ -38,10 +34,9 @@ struct OrderBuilderView: View {
                     if (i < availableItems.count) && (i < itemCounts.count) {
                         HStack {
                             Text(availableItems[i].name)
-                            Spacer()
                             Text(availableItems[i].cost, format: .currency(code: "USD"))
                             Spacer()
-                            Picker("Count", selection: $itemCounts[i]) {
+                            Picker("", selection: $itemCounts[i]) {
                                 ForEach(countOptions, id: \.self) { option in
                                     Text(option, format: .number)
                                 }
@@ -57,10 +52,9 @@ struct OrderBuilderView: View {
 
         }.navigationTitle("Menu Builder")
             .onAppear {
-                guard let profile = user.activeProfile else { return }
-                itemCounts = Array(repeating: 0, count: profile.menuItems.count)
+                itemCounts = Array(repeating: 0, count: user.activeProfile.menuItems.count)
                 for item in order.items {
-                    if let index = profile.menuItems.firstIndex(where: { $0.name == item.name }) {
+                    if let index = user.activeProfile.menuItems.firstIndex(where: { $0.name == item.name }) {
                         itemCounts[index] = item.count
                     }
                 }

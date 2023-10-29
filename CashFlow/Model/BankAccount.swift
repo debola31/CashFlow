@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct BankAccount: Hashable, Identifiable {
+struct BankAccount: Hashable, Identifiable, Codable {
     var id = UUID()
     var bankName: String
+
+    static let example = BankAccount(bankName: "Sterling")
 }

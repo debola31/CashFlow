@@ -1,5 +1,5 @@
 //
-//  MenuCreationView.swift
+//  ItemCreationView.swift
 //  CashFlow
 //
 //  Created by ADEBOLA AKEREDOLU on 10/26/23.
@@ -7,30 +7,26 @@
 
 import SwiftUI
 
-struct MenuCreationView: View {
+struct ItemCreationView: View {
     @EnvironmentObject var user: User
-    @State private var filterOption = "All"
     @State private var newItemName = ""
     @State private var newItemCost: Double = 0
     var items: [MenuItem] {
-        if let profile = user.activeProfile {
-            return profile.menuItems
-        }
-        return []
+        user.activeProfile.menuItems
     }
 
-    var options = ["All", "Items Only", "Add Ons Only"]
     var body: some View {
         Form {
             Section("Add New") {
                 TextField("Name", text: $newItemName, prompt: Text("Enter Name"))
-                TextField("Cost", value: $newItemCost, format: .currency(code: "NGN"), prompt: Text("Enter Cost"))
+                TextField("Cost", value: $newItemCost, format: .currency(code: "USD"), prompt: Text("Enter Cost"))
                 Button("Create New Item") {
-                    if let _ = user.activeProfile {
-                        let newItem = MenuItem(name: newItemName, cost: newItemCost)
-                        user.activeProfile?.menuItems.append(newItem)
-                    }
+                    let newItem = MenuItem(name: newItemName, cost: newItemCost)
+                    user.addMenuItem(newItem)
+                    newItemName = ""
+                    newItemCost = 0
                 }
+                .disabled(newItemName.count < 3 || newItemCost == 0)
             }
 
             Section("Items") {
@@ -41,6 +37,8 @@ struct MenuCreationView: View {
                         Spacer()
                         Text(item.cost, format: .currency(code: "USD"))
                     }
+                }.onDelete { IndexSet in
+                    user.removeMenuItem(IndexSet)
                 }
             }
         }
@@ -49,5 +47,5 @@ struct MenuCreationView: View {
 }
 
 #Preview {
-    MenuCreationView()
+    ItemCreationView()
 }

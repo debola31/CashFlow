@@ -6,13 +6,14 @@
 //
 
 import CombineCoreBluetooth
+import CoreImage
+import CoreImage.CIFilterBuiltins
 import SwiftUI
 
 extension CBUUID {
-    static let service = CBUUID(string: "1337")
-//    static let writeResponseCharacteristic = CBUUID(string: "0001")
-//    static let service = CBUUID(string: UUID().uuidString)
-    static var writeResponseCharacteristic = CBUUID(string: UUID().uuidString)
+//    static let service = CBUUID(string: "1337")
+    static let writeResponseCharacteristic = CBUUID(string: "0001")
+    static var service = CBUUID(string: UUID().uuidString)
 }
 
 class CentralDevice: ObservableObject {
@@ -57,5 +58,21 @@ class CentralDevice: ObservableObject {
             .catch { Just(Result.failure($0)) }
             .receive(on: DispatchQueue.main)
             .assign(to: &$peripheralConnectResult)
+    }
+
+    // For QR Code generation
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
+
+    func generateQRCode(from string: String) -> UIImage {
+        filter.message = Data(string.utf8)
+
+        if let outputImage = filter.outputImage {
+            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+                return UIImage(cgImage: cgimg)
+            }
+        }
+
+        return UIImage(systemName: "xmark.circle") ?? UIImage()
     }
 }

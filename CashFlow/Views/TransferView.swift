@@ -12,40 +12,75 @@ struct TransferView: View {
     @EnvironmentObject var user: User
     @Environment(\.dismiss) var dismiss
     @State var transferAmount: Double = 0
-    var banks = ["Example", "other", "either"]
-    @State var bank = "Example"
+    @State private var bankSelection = 0
     var maxTransfer: Double {
-        if transfer.type == .deposit {
-            return Transfer.maxDeposit
+        var maxDeposit: Double = 0
+        if user.activeProfile.type == .business {
+            maxDeposit = 10_000_000
         } else {
-            return user.activeProfile?.availableFunds ?? 0
+            maxDeposit = 100_000
+        }
+
+        if transfer.type == .deposit {
+            return maxDeposit - user.activeProfile.availableFunds
+        } else {
+            return user.activeProfile.availableFunds
         }
     }
 
-    let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "yo_NG")
-        return formatter
-    }()
-
     var body: some View {
-        VStack {
-            Button("Dismiss") {
-                dismiss()
-            }
-            Text(transfer.type.rawValue.capitalized)
-            TextField("Enter Amount", value: $transferAmount, formatter: currencyFormatter)
-                .padding()
-            Text("Out of: \(maxTransfer)")
+        NavigationStack {
+            Form {
+                Section("Enter \(transfer.type.rawValue.capitalized) Amount") {
+                    TextField("Enter Amount", value: $transferAmount, format: .currency(code: "USD"))
+                        .font(.headline)
+                        .padding(.bottom, 5)
+                    HStack {
+                        Text("Max:")
+                        Text(maxTransfer, format: .currency(code: "USD"))
+                    }
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 5)
+                }
 
-            Picker("Transfer to:", selection: $bank) {
-                ForEach(banks, id: \.self) { name in
-                    Text(name)
+                if user.hasBanks {
+                    Picker(transfer.type == .deposit ? "From:" : "To:", selection: $bankSelection) {
+                        ForEach(user.activeProfile.bankAccounts.indices, id: \.self) { selection in
+                            if selection < user.activeProfile.bankAccounts.count {
+                                Text("\(user.activeProfile.bankAccounts[selection].bankName)")
+                            }
+                        }
+                    }
+
+                    Button {
+                        if transfer.type == .deposit {
+                            user.addFunds(transferAmount)
+                        } else {
+                            user.takeOutFunds(transferAmount)
+                        }
+
+                        dismiss()
+
+                    } label: {
+                        HStack {
+                            Text(transfer.type.rawValue.capitalized)
+                            Text(transferAmount, format: .currency(code: "USD"))
+                        }
+                    }
+                    .disabled(transferAmount > maxTransfer || transferAmount == 0)
+                } else {
+                    Text("No Accounts in Profile")
                 }
             }
-
-            Button("Transfer \(transferAmount)") {}
+            .navigationTitle(transfer.type.rawValue.capitalized)
+            .toolbar {
+                ToolbarItem {
+                    Button("Exit") {
+                        dismiss()
+                    }.padding(5)
+                }
+            }
         }
     }
 }

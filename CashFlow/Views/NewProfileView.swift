@@ -19,13 +19,14 @@ struct NewProfileView: View {
                     Text(type.rawValue.capitalized)
                 }
             }
-//            .pickerStyle(.segmented)
 
             TextField("Enter Profile Name:", text: $name)
+                .autocorrectionDisabled()
 
             Button("Create Profile") {
                 let newProfile = UserProfile(name: name, type: profileType)
-                user.profiles.append(newProfile)
+                user.addProfile(newProfile)
+                user.setActiveProfile(newProfile)
                 dismiss()
             }.disabled(name.count < 4)
         }

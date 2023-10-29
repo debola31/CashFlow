@@ -20,18 +20,10 @@ struct MenuItem: Hashable, Identifiable, Comparable, Codable {
     static let exampleItems = [MenuItem(name: "Ex1", cost: 50), MenuItem(name: "Ex2", cost: 60)]
 }
 
-class Order: ObservableObject, Equatable, Hashable {
-    static func == (lhs: Order, rhs: Order) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        return hasher.combine(id)
-    }
-
-    var id = UUID()
+class Order: ObservableObject, Equatable, Hashable, Codable {
     @Published private(set) var items = [MenuItem]()
     @Published var totalCost: Double = 0.0
+    var id = UUID()
     var finalCost: Double {
         var cost: Double = 0
         for item in items {
@@ -42,6 +34,31 @@ class Order: ObservableObject, Equatable, Hashable {
 
     var isEmpty: Bool {
         items.isEmpty
+    }
+
+    enum CodingKeys: CodingKey {
+        case items, totalCost, id
+    }
+
+    init() {}
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        items = try container.decode([MenuItem].self, forKey: .items)
+        totalCost = try container.decode(Double.self, forKey: .totalCost)
+        id = try container.decode(UUID.self, forKey: .id)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(items, forKey: .items)
+        try container.encode(totalCost, forKey: .totalCost)
+        try container.encode(id, forKey: .id)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
     }
 
     func edit(_ item: MenuItem) {
@@ -74,5 +91,9 @@ class Order: ObservableObject, Equatable, Hashable {
 
     func loadItems(_ providedItems: [MenuItem]) {
         items = providedItems
+    }
+
+    static func == (lhs: Order, rhs: Order) -> Bool {
+        lhs.id == rhs.id
     }
 }

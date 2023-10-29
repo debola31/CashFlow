@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Transaction: Hashable {
+struct Transaction: Hashable, Codable {
     enum types: String {
         case pay, dash, charge, collect, refund
     }
 
-    let date = Date()
+    var date = Date()
     var id = UUID()
     var order: Order?
 

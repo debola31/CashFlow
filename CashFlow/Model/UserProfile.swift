@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct UserProfile: Identifiable, Hashable {
+struct UserProfile: Identifiable, Hashable, Codable {
     static func == (lhs: UserProfile, rhs: UserProfile) -> Bool {
         lhs.id == rhs.id
     }
 
-    enum Types: String, Hashable, CaseIterable {
+    enum Types: String, Hashable, CaseIterable, Codable {
         case business, individual
     }
 
@@ -21,22 +21,11 @@ struct UserProfile: Identifiable, Hashable {
     var type: Types = .individual
     var availableFunds: Double = 0
     var accountHistory: [Transaction] = []
-    let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "yo_NG")
-        return formatter
-    }()
-
-    var formatedFunds: String {
-        if let funds = currencyFormatter.string(from: availableFunds as NSNumber) {
-            return funds
-        }
-        return "0"
-    }
 
     var bankAccounts = [BankAccount]()
     var primaryAccount: BankAccount?
+    var menuItems = [MenuItem]()
 
-    static let example = UserProfile(name: "John Doe's")
+    static let saveKey = "CashFlow"
+    static let example = UserProfile(name: "John Doe's", menuItems: MenuItem.exampleItems)
 }

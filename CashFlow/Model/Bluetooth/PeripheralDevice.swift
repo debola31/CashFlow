@@ -12,6 +12,8 @@ class PeripheralDevice: ObservableObject {
     let peripheralManager = PeripheralManager.live()
     @Published var logs: String = ""
     @Published var advertising: Bool = false
+    @Published var receivedOrder: Order?
+    @Published var response: String?
     var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -19,9 +21,23 @@ class PeripheralDevice: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] requests in
                 guard let self = self else { return }
+                print("Received something")
+
                 print(requests.map { r in
                     "Write to \(r.characteristic.uuid), value: \(String(bytes: r.value ?? Data(), encoding: .utf8) ?? "<nil>")"
                 }.joined(separator: "\n"), to: &self.logs)
+
+                _ = requests.map { r in
+                    if let items = try? JSONDecoder().decode([MenuItem].self, from: r.value ?? Data()) {
+                        print("Received Order")
+                        self.receivedOrder = Order()
+                        self.receivedOrder?.loadItems(items)
+                    }
+                    if let response = String(bytes: r.value ?? Data(), encoding: .utf8) {
+                        print("Received Response")
+                        self.response = response
+                    }
+                }
 
                 self.peripheralManager.respond(to: requests[0], withResult: .success)
             }

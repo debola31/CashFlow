@@ -15,6 +15,5 @@ struct Transfer: Identifiable {
     var id = UUID()
     var type: Types
     var amount: Double = 0
-    static let maxDeposit: Double = 100_000
     static let example = Transfer(type: .deposit)
 }

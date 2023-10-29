@@ -6,7 +6,13 @@
 //
 
 import CombineCoreBluetooth
-import Foundation
+import SwiftUI
+
+extension PeripheralDiscovery: Equatable {
+    public static func == (lhs: CombineCoreBluetooth.PeripheralDiscovery, rhs: CombineCoreBluetooth.PeripheralDiscovery) -> Bool {
+        lhs.peripheral == rhs.peripheral
+    }
+}
 
 class ConnectedPeripheral: ObservableObject {
     let peripheral: Peripheral
@@ -17,12 +23,13 @@ class ConnectedPeripheral: ObservableObject {
     @Published var writeResponseResult: Result<Date, Error>?
 
     func write(
+        data: Data,
         to id: CBUUID,
         type: CBCharacteristicWriteType,
         result: ReferenceWritableKeyPath<ConnectedPeripheral, Published<Result<Date, Error>?>.Publisher>
     ) {
         peripheral.writeValue(
-            Data("Hello".utf8),
+            data,
             writeType: type,
             forCharacteristic: id,
             inService: .service
