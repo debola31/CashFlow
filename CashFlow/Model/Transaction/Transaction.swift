@@ -12,8 +12,9 @@ struct Transaction: Hashable {
         case pay, dash, charge, collect, refund
     }
 
-    var amount: Double
-    var complete = false
+    let date = Date()
+    var id = UUID()
+    var order: Order?
 
-    static let example = Transaction(amount: 0)
+    static let example = Transaction()
 }
