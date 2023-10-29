@@ -8,7 +8,7 @@
 import CombineCoreBluetooth
 import SwiftUI
 
-struct ConnectedPeripheralView: View {
+struct QRPeripheralView: View {
     @ObservedObject var device: ConnectedPeripheral
     @ObservedObject var central: CentralDevice
     @ObservedObject var order: Order
@@ -31,21 +31,7 @@ struct ConnectedPeripheralView: View {
     }
 
     var body: some View {
-        Section("Characteristic sends response") {
-            Button("Write with response") {
-                if device.peripheral.state == .disconnected {
-                    print("disconnected")
-                } else {
-                    device.write(
-                        data: Data("Hello".utf8),
-                        to: .writeResponseCharacteristic,
-                        type: .withResponse,
-                        result: \ConnectedPeripheral.$writeResponseResult
-                    )
-                }
-            }
-            label(for: device.writeResponseResult)
-        }
+        EmptyView()
     }
 
     func label<T>(for result: Result<T, Error>?) -> some View {
@@ -66,27 +52,17 @@ struct ConnectedPeripheralView: View {
     }
 }
 
-struct ConnectedPeripheralView2: View {
+struct ConfirmationPeripheralView: View {
     @ObservedObject var device: ConnectedPeripheral
     @ObservedObject var central: CentralDevice
     @ObservedObject var order: Order
+    @Binding var transaction: Transaction?
 
-    init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order) {
+    init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order, _ transaction: Binding<Transaction?>) {
         self.device = .init(peripheral)
         self.central = central
         self.order = order
-//        let random = Int.random(in: 1 ... 100)
-//
-//        if let data = try? JSONEncoder().encode(order.items) {
-//            device.write(
-//                data: Data("Pay\(random)".utf8),
-//                to: .writeResponseCharacteristic,
-//                type: .withResponse,
-//                result: \ConnectedPeripheral.$writeResponseResult
-//            )
-//            print("didSend")
-//        }
-//        print("sent")
+        _transaction = transaction
     }
 
     var body: some View {
@@ -102,8 +78,35 @@ struct ConnectedPeripheralView2: View {
                         result: \ConnectedPeripheral.$writeResponseResult
                     )
                 }
+            }.onAppear {
+                if device.peripheral.state == .disconnected {
+                    print("Reconnecting...")
+                    _ = central.centralManager.connect(device.peripheral)
+                }
+            }.onChange(of: device.peripheral.state) {
+                if device.peripheral.state == .disconnected {
+                    print("Retry Reconnecting...")
+                    _ = central.centralManager.connect(device.peripheral)
+                }
+            }.disabled(device.peripheral.state == .disconnected)
+
+            if let result = device.writeResponseResult {
+                ProgressView()
+                    .onAppear {
+                        switch result {
+                        case .success:
+                            let newTransaction = Transaction(order: order)
+                            transaction = newTransaction
+                            return print("Received message confirmation")
+                        case let .failure(error):
+                            return print("\(error)")
+                        }
+                    }
             }
-            label(for: device.writeResponseResult)
+
+            // TODO: Finish confirmation of Payment by somehow getting this result value's success to trigger something
+            // TODO: Get the confirmation of QR code reader to grey out QR code as well.
+//            label(for: device.writeResponseResult)
         }
     }
 

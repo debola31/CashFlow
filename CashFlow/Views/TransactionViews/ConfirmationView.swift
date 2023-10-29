@@ -12,91 +12,54 @@ struct ConfirmationView: View {
     @Binding var navPath: NavigationPath
     @StateObject var peripheralDevice = PeripheralDevice()
     @EnvironmentObject var centralDevice: CentralDevice
-    @State var transaction: Transaction?
+    @Binding var transaction: Transaction?
     var peripheralConnected = false
 
     var body: some View {
         Group {
             if let order = peripheralDevice.receivedOrder {
-                Text("Confirm Order")
-                    .font(.largeTitle)
-                    .padding()
-
                 Form {
                     OrderTotalView(order: order)
 
-                    Section("Discovered peripherals") {
+                    if let device = centralDevice.connectedPeripheral {
+                        ConfirmationPeripheralView(device, centralDevice, order, $transaction)
+
+                    } else {
                         ForEach(centralDevice.peripherals) { discovery in
-                            Button(discovery.peripheral.name ?? "<nil>") {
-                                centralDevice.connect(discovery)
-                            }
-                            .onAppear {
-                                centralDevice.connect(discovery)
-                            }
+                            ProgressView()
+                                .onAppear {
+                                    centralDevice.connect(discovery)
+                                }
                         }
                     }
 
-                    if let device = centralDevice.connectedPeripheral {
-                        ConnectedPeripheralView2(device, centralDevice, order)
-//                        Button("Pay") {
-//                            let peripheral = ConnectedPeripheral(device)
-//                            if let data = try? JSONEncoder().encode(order.items) {
-//                                peripheral.write(
-//                                    data: Data("Pay".utf8),
-//                                    to: .writeResponseCharacteristic,
-//                                    type: .withResponse,
-//                                    result: \ConnectedPeripheral.$writeResponseResult
-//                                )
-//                                print("didSend")
-//                            }
-//                            transaction = Transaction(order: order)
-//                        }
-//
-//                        Button("Cancel") {
-//                            let peripheral = ConnectedPeripheral(device)
-//                            if let data = try? JSONEncoder().encode(order.items) {
-//                                peripheral.write(
-//                                    data: Data("Cancel".utf8),
-//                                    to: .writeResponseCharacteristic,
-//                                    type: .withResponse,
-//                                    result: \ConnectedPeripheral.$writeResponseResult
-//                                )
-//                                print("didSend")
-//                            }
-//                            navPath = NavigationPath()
-//                        }
+                    Section {
+                        Button(transaction == nil ? "Cancel" : "Exit") {
+                            navPath = NavigationPath()
+                        }
                     }
 
                     if let transaction = transaction {
-                        Button("Exit") {
-                            navPath = NavigationPath()
-                        }
-                        Button("View Receipt") {
-                            navPath.append(transaction)
+                        Section {
+                            Button("View Receipt") {
+                                navPath.append(transaction)
+                            }
                         }
                     }
 
-                    Text(peripheralDevice.logs)
+//                    Text(peripheralDevice.logs)
                 }
+                .navigationTitle("Confirm Order")
             } else {
                 ProgressView()
             }
-//            Text("Hello, World!")
-//            Button("Slide to Confirm") {
-//                navPath = NavigationPath()
-//            }
-//            Button("View Receipt") {
-//                let record = Record(transaction: transaction)
-//                navPath.append(record)
-//            }
-
-//            Text(peripheralDevice.logs)
         }
         .onAppear {
             peripheralDevice.start()
             centralDevice.searchForPeripherals()
         }
         .onDisappear {
+            peripheralDevice.stop()
             peripheralDevice.receivedOrder = nil
         }
     }

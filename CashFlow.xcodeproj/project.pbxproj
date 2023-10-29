@@ -17,6 +17,7 @@
 		066218EB2AEC8F2100220867 /* ConnectedPeripheralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066218EA2AEC8F2100220867 /* ConnectedPeripheralView.swift */; };
 		066218ED2AEC942800220867 /* PeripheralDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066218EC2AEC942800220867 /* PeripheralDevice.swift */; };
 		066218F22AED455800220867 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066218F12AED455800220867 /* QRCodeView.swift */; };
+		066AAB5F2AEE3419004CC0A8 /* QRCode-OldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066AAB5E2AEE3419004CC0A8 /* QRCode-OldView.swift */; };
 		06CA910A2AEDBEAA004DFA7A /* OrderTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CA91092AEDBEAA004DFA7A /* OrderTotalView.swift */; };
 		3033658E2AE9FF4500C12927 /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033658D2AE9FF4500C12927 /* ReceiptView.swift */; };
 		303365922AEA1D8700C12927 /* NewProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303365912AEA1D8700C12927 /* NewProfileView.swift */; };
@@ -68,6 +69,7 @@
 		066218EA2AEC8F2100220867 /* ConnectedPeripheralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedPeripheralView.swift; sourceTree = "<group>"; };
 		066218EC2AEC942800220867 /* PeripheralDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralDevice.swift; sourceTree = "<group>"; };
 		066218F12AED455800220867 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
+		066AAB5E2AEE3419004CC0A8 /* QRCode-OldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCode-OldView.swift"; sourceTree = "<group>"; };
 		06CA91092AEDBEAA004DFA7A /* OrderTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTotalView.swift; sourceTree = "<group>"; };
 		3033658D2AE9FF4500C12927 /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		303365912AEA1D8700C12927 /* NewProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				066218EA2AEC8F2100220867 /* ConnectedPeripheralView.swift */,
 				309476AF2AE9F3A700727706 /* ConfirmationView.swift */,
 				066218F12AED455800220867 /* QRCodeView.swift */,
+				066AAB5E2AEE3419004CC0A8 /* QRCode-OldView.swift */,
 			);
 			path = TransactionViews;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				3054F61B2AE9925C001F9FB6 /* ProfileView.swift in Sources */,
 				30B11EF12AE8842F00ACBB90 /* CashFlowApp.swift in Sources */,
 				066218EB2AEC8F2100220867 /* ConnectedPeripheralView.swift in Sources */,
+				066AAB5F2AEE3419004CC0A8 /* QRCode-OldView.swift in Sources */,
 				309EEBC82AEB375700C9C68A /* OrderBuilderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

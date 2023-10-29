@@ -15,9 +15,21 @@ struct TransactionView: View {
     @EnvironmentObject var user: User
     @State var isShowingSheet = false
     @State var navPath = NavigationPath()
-    @StateObject var order = Order()
+    @StateObject var order: Order
     @State var activeChar = CBUUID.writeResponseCharacteristic.uuidString
     @State var disableTransaction = false
+    @State var transaction: Transaction?
+
+    init(transactionType: Transaction.types) {
+        self.transactionType = transactionType
+        if let data = UserDefaults.standard.data(forKey: MenuItem.orderSaveKey) {
+            if let decoded = try? JSONDecoder().decode(Order.self, from: data) {
+                _order = StateObject(wrappedValue: decoded)
+                return
+            }
+        }
+        _order = StateObject(wrappedValue: Order())
+    }
 
     var actionText: String {
         switch transactionType {
@@ -38,22 +50,10 @@ struct TransactionView: View {
         isShowingSheet = false
         switch result {
         case .success(let result):
-            let _ = result
-//            print(result)
-//            print("success")
-
             // Set Bluetooth Service String
             CBUUID.service = CBUUID(string: result.string)
             navPath.append(0)
 
-//            let details = result.string.components(separatedBy: "\n")
-//            guard details.count == 2 else { return }
-//
-//            let person = Prospect()
-//            person.name = details[0]
-//            person.emailAddress = details[1]
-//
-//            prospects.add(person)
         case .failure(let error):
             print("Scanning failed: \(error.localizedDescription)")
         }
@@ -112,8 +112,15 @@ struct TransactionView: View {
 //                }
 
                 Button(actionText) {
-                    isShowingSheet = true
+//                    isShowingSheet = true
+                    switch transactionType {
+                    case .pay, .collect, .refund:
+                        isShowingSheet = true
+                    case .dash, .charge:
+                        navPath.append("")
+                    }
                 }
+                .font(.title3)
                 .buttonStyle(.plain)
                 .padding(30)
                 .background(.blue)
@@ -137,19 +144,27 @@ struct TransactionView: View {
                 }
             }
             .navigationDestination(for: Int.self) { _ in
-                ConfirmationView(navPath: $navPath)
+                ConfirmationView(navPath: $navPath, transaction: $transaction)
             }
-            .navigationDestination(for: Transaction.self, destination: { transaction in
-                ReceiptView(navPath: $navPath, transaction: transaction)
+//            .navigationDestination(for: Transaction.self, destination: { transaction in
+            ////                ReceiptView(navPath: $navPath, transaction: transaction)
+//                ReceiptView(isShowingQRCode: $isShowingSheet, transaction: transaction)
+//            })
+            .navigationDestination(for: String.self, destination: { _ in
+                QRCodeView(transaction: $transaction, order: order)
             })
             .navigationTitle(transactionType.rawValue.capitalized)
             .sheet(isPresented: $isShowingSheet) {
-                switch transactionType {
-                case .pay, .collect, .refund:
-                    CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
-                case .dash, .charge:
-                    QRCodeView(order: order)
-                }
+                CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+//                switch transactionType {
+//                case .pay, .collect, .refund:
+//                    CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+//                case .dash, .charge:
+//                    QRCodeView(transaction: $transaction, order: order)
+//                }
+            }
+            .sheet(item: $transaction) { transaction in
+                ReceiptView(transaction: transaction)
             }
         }
     }

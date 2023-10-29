@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transaction: Hashable, Codable {
+struct Transaction: Hashable, Codable, Identifiable {
     enum types: String {
         case pay, dash, charge, collect, refund
     }
