@@ -9,9 +9,9 @@ import CoreBluetooth
 import SwiftUI
 
 struct ConfirmationView: View {
-    @Binding var navPath: NavigationPath
     @StateObject var peripheralDevice = PeripheralDevice()
     @EnvironmentObject var centralDevice: CentralDevice
+    @Environment(\.dismiss) var dismiss
     @Binding var transaction: Transaction?
     var peripheralConnected = false
 
@@ -35,15 +35,7 @@ struct ConfirmationView: View {
 
                     Section {
                         Button(transaction == nil ? "Cancel" : "Exit") {
-                            navPath = NavigationPath()
-                        }
-                    }
-
-                    if let transaction = transaction {
-                        Section {
-                            Button("View Receipt") {
-                                navPath.append(transaction)
-                            }
+                            dismiss()
                         }
                     }
 
@@ -61,6 +53,11 @@ struct ConfirmationView: View {
         .onDisappear {
             peripheralDevice.stop()
             peripheralDevice.receivedOrder = nil
+//            centralDevice.stopSearching()
+//            centralDevice.peripheralConnectResult = nil
+            if let device = centralDevice.connectedPeripheral {
+                centralDevice.centralManager.cancelPeripheralConnection(device)
+            }
         }
     }
 }

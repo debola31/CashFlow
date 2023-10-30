@@ -28,6 +28,9 @@ class ConnectedPeripheral: ObservableObject {
         type: CBCharacteristicWriteType,
         result: ReferenceWritableKeyPath<ConnectedPeripheral, Published<Result<Date, Error>?>.Publisher>
     ) {
+        if let text = String(bytes: data, encoding: .utf8) {
+            print("Writing \(text)")
+        }
         peripheral.writeValue(
             data,
             writeType: type,

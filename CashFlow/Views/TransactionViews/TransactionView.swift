@@ -13,10 +13,9 @@ import SwiftUI
 struct TransactionView: View {
     let transactionType: Transaction.types
     @EnvironmentObject var user: User
-    @State var isShowingSheet = false
-    @State var navPath = NavigationPath()
     @StateObject var order: Order
-    @State var activeChar = CBUUID.writeResponseCharacteristic.uuidString
+    @State var isShowingScanner = false
+    @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
 
@@ -47,7 +46,7 @@ struct TransactionView: View {
     }
 
     func handleScan(result: Result<ScanResult, ScanError>) {
-        isShowingSheet = false
+        isShowingScanner = false
         switch result {
         case .success(let result):
             // Set Bluetooth Service String
@@ -62,60 +61,10 @@ struct TransactionView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
-//                Section {
-//                    Button("change characteristic") {
-//                        CBUUID.writeResponseCharacteristic = CBUUID(string: "0001") // CBUUID(string: UUID().uuidString)
-//                        activeChar = CBUUID.writeResponseCharacteristic.uuidString
-//                    }
-//                    Text("Active char: \(activeChar)")
-//                }
-//                Section {
-//                    Button("Search for Peripheral") {
-//                        centralDevice.searchForPeripherals()
-//                    }.disabled(centralDevice.scanning)
-//
-//                    Button("Stop Searching") {
-//                        centralDevice.stopSearching()
-//                    }
-//                }
-//
-//                Section {
-//                    if let device = centralDevice.connectedPeripheral {
-//                        Text("Connected to \(device.name ?? "nil")")
-//                        Button("disconnect") {
-//                            centralDevice.peripheralConnectResult = nil
-//                        }
-//                        ConnectedPeripheralView(device, centralDevice)
-//
-//                    } else {
-//                        Section("Discovered peripherals") {
-//                            ForEach(centralDevice.peripherals) { discovery in
-//                                Button(discovery.peripheral.name ?? "<nil>") {
-//                                    centralDevice.connect(discovery)
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                Section {
-//                    Button("Start advertising") {
-//                        peripheral.start()
-//                    }.disabled(peripheral.advertising)
-//
-//                    Button("Stop advertising") {
-//                        peripheral.stop()
-//                    }
-//
-//                    Text("Logs:")
-//                    Text(peripheral.logs)
-//                }
-
                 Button(actionText) {
-//                    isShowingSheet = true
                     switch transactionType {
                     case .pay, .collect, .refund:
-                        isShowingSheet = true
+                        isShowingScanner = true
                     case .dash, .charge:
                         navPath.append("")
                     }
@@ -144,27 +93,17 @@ struct TransactionView: View {
                 }
             }
             .navigationDestination(for: Int.self) { _ in
-                ConfirmationView(navPath: $navPath, transaction: $transaction)
+                ConfirmationView(transaction: $transaction)
             }
-//            .navigationDestination(for: Transaction.self, destination: { transaction in
-            ////                ReceiptView(navPath: $navPath, transaction: transaction)
-//                ReceiptView(isShowingQRCode: $isShowingSheet, transaction: transaction)
-//            })
             .navigationDestination(for: String.self, destination: { _ in
                 QRCodeView(transaction: $transaction, order: order)
             })
             .navigationTitle(transactionType.rawValue.capitalized)
-            .sheet(isPresented: $isShowingSheet) {
+            .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
-//                switch transactionType {
-//                case .pay, .collect, .refund:
-//                    CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
-//                case .dash, .charge:
-//                    QRCodeView(transaction: $transaction, order: order)
-//                }
             }
             .sheet(item: $transaction) { transaction in
-                ReceiptView(transaction: transaction)
+                ReceiptView(navPath: $navPath, transaction: transaction)
             }
         }
     }

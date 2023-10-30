@@ -30,16 +30,25 @@ class PeripheralDevice: ObservableObject {
                 _ = requests.map { r in
                     if let items = try? JSONDecoder().decode([MenuItem].self, from: r.value ?? Data()) {
                         print("Received Order")
+                        print(items)
                         self.receivedOrder = Order()
                         self.receivedOrder?.loadItems(items)
                     }
                     if let response = String(bytes: r.value ?? Data(), encoding: .utf8) {
                         print("Received Response")
+                        print(response)
                         self.response = response
                     }
                 }
 
-                self.peripheralManager.respond(to: requests[0], withResult: .success)
+                for request in requests {
+                    for _ in 1 ... 10 {
+                        self.peripheralManager.respond(to: request, withResult: .success)
+                    }
+                }
+
+//                self.peripheralManager.respond(to: requests[0], withResult: .success)
+                print("responded")
             }
             .store(in: &cancellables)
     }

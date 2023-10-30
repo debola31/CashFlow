@@ -25,13 +25,13 @@ struct QRPeripheralView: View {
                 type: .withResponse,
                 result: \ConnectedPeripheral.$writeResponseResult
             )
-            print("didSend")
+            //            print("didSend")
         }
-        print("sent")
+//        print("sent")
     }
 
     var body: some View {
-        EmptyView()
+        ProgressView()
     }
 
     func label<T>(for result: Result<T, Error>?) -> some View {
@@ -57,6 +57,7 @@ struct ConfirmationPeripheralView: View {
     @ObservedObject var central: CentralDevice
     @ObservedObject var order: Order
     @Binding var transaction: Transaction?
+    @State var paying = false
 
     init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order, _ transaction: Binding<Transaction?>) {
         self.device = .init(peripheral)
@@ -67,39 +68,56 @@ struct ConfirmationPeripheralView: View {
 
     var body: some View {
         Section {
+            if device.peripheral.state != .connected {
+                ForEach(central.peripherals) { discovery in
+                    ProgressView()
+                        .onAppear {
+                            central.connect(discovery)
+                        }
+                }
+            }
+
+            if paying {
+                if device.peripheral.state == .connected {
+                    FinishPaying(device)
+                }
+            }
+
             Button("Pay") {
-                if device.peripheral.state == .disconnected {
+                print("Begin")
+                if device.peripheral.state != .connected {
                     print("disconnected")
                 } else {
-                    device.write(
-                        data: Data("Pay".utf8),
-                        to: .writeResponseCharacteristic,
-                        type: .withResponse,
-                        result: \ConnectedPeripheral.$writeResponseResult
-                    )
+//                    print("Trying")
+                    paying = true
+//                    device.write(
+//                        data: Data("Pay".utf8),
+//                        to: .writeResponseCharacteristic,
+//                        type: .withResponse,
+//                        result: \ConnectedPeripheral.$writeResponseResult
+//                    )
+//                    print("Tried")
                 }
-            }.onAppear {
-                if device.peripheral.state == .disconnected {
-                    print("Reconnecting...")
-                    _ = central.centralManager.connect(device.peripheral)
-                }
-            }.onChange(of: device.peripheral.state) {
-                if device.peripheral.state == .disconnected {
-                    print("Retry Reconnecting...")
-                    _ = central.centralManager.connect(device.peripheral)
-                }
-            }.disabled(device.peripheral.state == .disconnected)
+            }
+            .disabled(device.peripheral.state != .connected)
+            .onAppear {
+                print("Peripheral State: \(device.peripheral.state)")
+            }
 
             if let result = device.writeResponseResult {
                 ProgressView()
                     .onAppear {
+                        print("Appeared")
                         switch result {
                         case .success:
                             let newTransaction = Transaction(order: order)
+                            paying = false
                             transaction = newTransaction
-                            return print("Received message confirmation")
+                            print("Received message confirmation")
+                            return
                         case let .failure(error):
-                            return print("\(error)")
+                            print("\(error)")
+                            return
                         }
                     }
             }
@@ -109,22 +127,22 @@ struct ConfirmationPeripheralView: View {
 //            label(for: device.writeResponseResult)
         }
     }
+}
 
-    func label<T>(for result: Result<T, Error>?) -> some View {
-        Group {
-            switch result {
-            case let .success(value)?:
-                Text("Wrote at \(String(describing: value))")
-            case let .failure(error)?:
-                if let error = error as? LocalizedError, let errorDescription = error.errorDescription {
-                    Text("Error: \(errorDescription)")
-                } else {
-                    Text("Error: \(String(describing: error))")
-                }
-            case nil:
-                EmptyView()
-            }
-        }
+struct FinishPaying: View {
+    @ObservedObject var device: ConnectedPeripheral
+    init(_ device: ConnectedPeripheral) {
+        self.device = device
+        device.write(
+            data: Data("Pay".utf8),
+            to: .writeResponseCharacteristic,
+            type: .withResponse,
+            result: \ConnectedPeripheral.$writeResponseResult
+        )
+    }
+
+    var body: some View {
+        ProgressView()
     }
 }
 

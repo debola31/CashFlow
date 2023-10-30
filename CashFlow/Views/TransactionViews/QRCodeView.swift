@@ -16,6 +16,7 @@ struct QRCodeView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var order: Order
     @State private var qrCode = UIImage()
+    @State var scannedImage = false
 //    @State var transactionComplete = false
 
     func loadCode() {
@@ -26,13 +27,12 @@ struct QRCodeView: View {
     var body: some View {
 //        NavigationStack {
         VStack {
-            Spacer()
             Text("Scan Invoice")
                 .font(.largeTitle)
                 .padding(.bottom, 40)
 
             Image(uiImage: qrCode)
-                .interpolation(.none)
+                .interpolation(scannedImage ? .high : .none)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 250, height: 250)
@@ -69,6 +69,10 @@ struct QRCodeView: View {
         .onDisappear {
             centralDevice.stopSearching()
             centralDevice.peripheralConnectResult = nil
+            peripheralDevice.stop()
+            if let device = centralDevice.connectedPeripheral {
+                centralDevice.centralManager.cancelPeripheralConnection(device)
+            }
         }
         .onChange(of: peripheralDevice.response) {
             transaction = Transaction(order: order)

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptView: View {
     @Environment(\.dismiss) var dismiss
-//    @Binding var navPath: NavigationPath
+    @Binding var navPath: NavigationPath
     let transaction: Transaction
     var body: some View {
         NavigationStack {
@@ -38,7 +38,7 @@ struct ReceiptView: View {
                     }
                 }
                 Button("Close") {
-                    //                navPath = NavigationPath()
+                    navPath = NavigationPath()
                     dismiss()
                 }
             }
