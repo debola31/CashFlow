@@ -108,4 +108,9 @@ class User: ObservableObject, Codable {
         activeProfile.accountHistory.sort()
         syncProfiles()
     }
+
+    func removeTransaction(_ indexSet: IndexSet) {
+        activeProfile.accountHistory.remove(atOffsets: indexSet)
+        syncProfiles()
+    }
 }

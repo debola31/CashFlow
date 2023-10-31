@@ -15,6 +15,7 @@ struct ConfirmationPeripheralView: View {
     @ObservedObject var order: Order
     @Binding var transaction: Transaction?
     @State var paying = false
+    @State var cancelling = false
     @State var paidDate = Date()
 
     init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order, _ transaction: Binding<Transaction?>) {
@@ -42,16 +43,29 @@ struct ConfirmationPeripheralView: View {
                 HStack {
                     Text("Pay")
                     Spacer()
-                    if paying && device.peripheral.state == .connected {
+                    if paying {
                         FinishPaying(device, user, order)
                     }
                 }
             }.disabled((device.peripheral.state != .connected) || paying || (order.totalCost > user.activeProfile.availableFunds))
 
+            Section {
+                Button {
+                    cancelling = true
+                } label: {
+                    HStack {
+                        Text("Cancel")
+                        Spacer()
+                        if cancelling {
+                            FinishCancelling(device)
+                        }
+                    }
+                }.disabled((device.peripheral.state != .connected) || cancelling)
+            }
+
             if let result = device.writeResponseResult {
                 ProgressView()
                     .onAppear {
-                        print("Appeared")
                         switch result {
                         case .success:
                             let newTransaction = Transaction(
@@ -64,7 +78,6 @@ struct ConfirmationPeripheralView: View {
                             paying = false
                             user.takeOutFunds(order.finalCost)
                             transaction = newTransaction
-                            print("Received message confirmation")
                             return
                         case let .failure(error):
                             print("\(error)")

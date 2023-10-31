@@ -88,5 +88,10 @@ struct DashCodeView: View {
                 }
             }
         }
+        .onChange(of: peripheralDevice.receivedCancel) {
+            if let _ = peripheralDevice.receivedCancel {
+                dismiss()
+            }
+        }
     }
 }

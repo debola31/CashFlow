@@ -20,3 +20,9 @@ struct OrderConfirmation: Identifiable, Codable, Hashable {
     var from: String
     var order: Order
 }
+
+struct Cancel: Codable, Hashable {
+    var id = UUID()
+    var cancel = true
+    var date = Date()
+}

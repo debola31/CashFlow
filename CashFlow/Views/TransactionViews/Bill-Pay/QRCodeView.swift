@@ -38,10 +38,12 @@ struct QRCodeView: View {
             Spacer()
 
             if let device = centralDevice.connectedPeripheral {
-                QRPeripheralView(device, order)
-                    .onAppear {
-                        scannedImage = true
-                    }
+                if transaction == nil {
+                    QRPeripheralView(device, order)
+                        .onAppear {
+                            scannedImage = true
+                        }
+                }
             } else {
                 ForEach(centralDevice.peripherals) { discovery in
                     ProgressView()
@@ -86,6 +88,11 @@ struct QRCodeView: View {
                         payee: confirmedOrder.order.to,
                         type: .bill)
                 }
+            }
+        }
+        .onChange(of: peripheralDevice.receivedCancel) {
+            if let _ = peripheralDevice.receivedCancel {
+                dismiss()
             }
         }
     }

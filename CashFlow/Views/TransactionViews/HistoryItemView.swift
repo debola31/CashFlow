@@ -10,65 +10,67 @@ import SwiftUI
 struct HistoryItemView: View {
     let transaction: Transaction
     var body: some View {
-        HStack {
-            Text("Date:")
-            Spacer()
-            Text(transaction.date, format: .dateTime)
-        }
-
-        HStack {
-            Text("Transaction Type:")
-            Spacer()
-            Text(transaction.dash == nil ? "BillPay" : "Dash")
-        }
-
-        if let order = transaction.order {
+        Section {
             HStack {
-                Text("Business:")
+                Text("Date:")
                 Spacer()
-                Text(transaction.payee ?? "")
+                Text(transaction.date, format: .dateTime)
             }
 
             HStack {
-                Text("Client:")
+                Text("Transaction Type:")
                 Spacer()
-                Text(transaction.payer ?? "")
+                Text(transaction.dash == nil ? "BillPay" : "Dash")
             }
 
-            HStack {
-                Text("Total:")
-                Spacer()
-                Text(order.finalCost, format: .currency(code: "USD"))
-            }
+            if let order = transaction.order {
+                HStack {
+                    Text("Business:")
+                    Spacer()
+                    Text(transaction.payee ?? "")
+                }
 
-            Section("Items") {
-                ForEach(order.items) { item in
-                    HStack {
-                        Text("\(item.count) * \(item.name)")
-                        Spacer()
-                        Text(Double(item.count) * item.cost, format: .currency(code: "USD"))
+                HStack {
+                    Text("Client:")
+                    Spacer()
+                    Text(transaction.payer ?? "")
+                }
+
+                HStack {
+                    Text("Total:")
+                    Spacer()
+                    Text(order.finalCost, format: .currency(code: "USD"))
+                }
+
+                Section("Items") {
+                    ForEach(order.items) { item in
+                        HStack {
+                            Text("\(item.count) * \(item.name)")
+                            Spacer()
+                            Text(Double(item.count) * item.cost, format: .currency(code: "USD"))
+                        }
                     }
                 }
             }
-        }
 
-        if let dash = transaction.dash {
-            HStack {
-                Text("From:")
-                Spacer()
-                Text(transaction.payer ?? "")
-            }
+            if let dash = transaction.dash {
+                HStack {
+                    Text("From:")
+                    Spacer()
+                    Text(transaction.payer ?? "")
+                }
 
-            HStack {
-                Text("To:")
-                Spacer()
-                Text(transaction.payee ?? "")
-            }
+                HStack {
+                    Text("To:")
+                    Spacer()
+                    Text(transaction.payee ?? "")
+                }
 
-            HStack {
-                Text("Amount:")
-                Spacer()
-                Text(dash.amount, format: .currency(code: "USD"))
+                HStack {
+                    Text("Amount:")
+                    Spacer()
+                    Text(dash.amount, format: .currency(code: "USD"))
+                }
             }
         }
     }

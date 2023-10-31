@@ -36,12 +36,6 @@ struct CollectConfirmationView: View {
                                 }
                         }
                     }
-
-                    Section {
-                        Button(transaction == nil ? "Cancel" : "Exit") {
-                            dismiss()
-                        }
-                    }
                 }
                 .navigationTitle("Accept Dash")
             } else {
@@ -55,9 +49,6 @@ struct CollectConfirmationView: View {
         .onDisappear {
             peripheralDevice.stop()
             peripheralDevice.receivedOrder = nil
-//            if let device = centralDevice.connectedPeripheral {
-//                centralDevice.centralManager.cancelPeripheralConnection(device)
-//            }
         }
     }
 }

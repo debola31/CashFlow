@@ -16,6 +16,7 @@ class PeripheralDevice: ObservableObject {
     @Published var receivedDash: Dash?
     @Published var receivedDashConfirmation: DashConfirmation?
     @Published var receivedOrderConfirmation: OrderConfirmation?
+    @Published var receivedCancel: Cancel?
     var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -23,7 +24,6 @@ class PeripheralDevice: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] requests in
                 guard let self = self else { return }
-                print("Received something")
 
                 print(requests.map { r in
                     "Write to \(r.characteristic.uuid), value: \(String(bytes: r.value ?? Data(), encoding: .utf8) ?? "<nil>")"
@@ -32,32 +32,29 @@ class PeripheralDevice: ObservableObject {
                 _ = requests.map { r in
 
                     if let order = try? JSONDecoder().decode(Order.self, from: r.value ?? Data()) {
-                        print("Received Order")
                         self.receivedOrder = order
                     }
 
                     if let dash = try? JSONDecoder().decode(Dash.self, from: r.value ?? Data()) {
-                        print("Received Dash")
                         self.receivedDash = dash
                     }
 
                     if let confirmation = try? JSONDecoder().decode(DashConfirmation.self, from: r.value ?? Data()) {
-                        print("Received Confirmation")
                         self.receivedDashConfirmation = confirmation
                     }
 
                     if let confirmation = try? JSONDecoder().decode(OrderConfirmation.self, from: r.value ?? Data()) {
-                        print("Received Confirmation")
                         self.receivedOrderConfirmation = confirmation
+                    }
+
+                    if let cancel = try? JSONDecoder().decode(Cancel.self, from: r.value ?? Data()) {
+                        self.receivedCancel = cancel
                     }
                 }
 
                 for request in requests {
-//                    for _ in 1 ... 10 {
                     self.peripheralManager.respond(to: request, withResult: .success)
-//                    }
                 }
-                print("responded")
             }
             .store(in: &cancellables)
     }
@@ -92,7 +89,6 @@ class PeripheralDevice: ObservableObject {
 
     func stop() {
         peripheralManager.stopAdvertising()
-        peripheralManager.removeAllServices()
         cancellables = []
         advertising = false
     }

@@ -27,7 +27,6 @@ struct DashQRPeripheralView: View {
     }
 
     var body: some View {
-//        EmptyView()
         ProgressView()
     }
 }

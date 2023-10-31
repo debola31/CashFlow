@@ -40,12 +40,6 @@ struct ConfirmationView: View {
                                 }
                         }
                     }
-
-                    Section {
-                        Button(transaction == nil ? "Cancel" : "Exit") {
-                            dismiss()
-                        }
-                    }
                 }
                 .navigationTitle("Confirm Order")
             } else {
@@ -59,15 +53,6 @@ struct ConfirmationView: View {
         .onDisappear {
             peripheralDevice.stop()
             peripheralDevice.receivedOrder = nil
-//            centralDevice.stopSearching()
-//            centralDevice.peripheralConnectResult = nil
-            if let device = centralDevice.connectedPeripheral {
-                centralDevice.centralManager.cancelPeripheralConnection(device)
-            }
         }
     }
 }
-
-// #Preview {
-//    ConfirmationView(navPath: .constant(NavigationPath()))
-// }
