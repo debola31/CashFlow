@@ -10,19 +10,15 @@ import CoreBluetooth
 import CoreImage.CIFilterBuiltins
 import SwiftUI
 
-struct OrderView: View {
-    let transactionType: Transaction.types
+struct ChargeView: View {
     @EnvironmentObject var user: User
     @StateObject var order: Order
     @State var isShowingScanner = false
     @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
-    @State var dashAmount: Double = 0
-    let scanningTransactions: [Transaction.types] = [.pay, .collect]
 
     init(transactionType: Transaction.types) {
-        self.transactionType = transactionType
         if let data = UserDefaults.standard.data(forKey: MenuItem.orderSaveKey) {
             if let decoded = try? JSONDecoder().decode(Order.self, from: data) {
                 _order = StateObject(wrappedValue: decoded)
@@ -33,7 +29,7 @@ struct OrderView: View {
     }
 
     func evaluationTransaction() {
-        if order.isEmpty && transactionType == .charge {
+        if order.isEmpty {
             disableTransaction = true
         } else {
             disableTransaction = false
@@ -46,7 +42,7 @@ struct OrderView: View {
         case .success(let result):
             // Set Bluetooth Service String
             CBUUID.service = CBUUID(string: result.string)
-            navPath.append(0)
+            navPath.append(order)
 
         case .failure(let error):
             print("Scanning failed: \(error.localizedDescription)")
@@ -56,12 +52,9 @@ struct OrderView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
-                Button(transactionType.actionText) {
-                    if scanningTransactions.contains(transactionType) {
-                        isShowingScanner = true
-                    } else {
-                        navPath.append("")
-                    }
+                Button("Generate Invoice Code") {
+                    order.from = user.activeProfile.name
+                    navPath.append(order)
                 }
                 .font(.title3)
                 .buttonStyle(.plain)
@@ -77,26 +70,21 @@ struct OrderView: View {
                     evaluationTransaction()
                 }
 
-                if transactionType == .charge {
-                    Section("Build Menu") {
-                        NavigationLink(order.items.isEmpty ? "Add to Cart" : "Edit Cart") {
-                            OrderBuilderView(order: order)
-                        }
-                        Button("Clear Cart") {
-                            order.clear()
-                        }.disabled(order.isEmpty)
+                Section("Build Menu") {
+                    NavigationLink(order.items.isEmpty ? "Add to Cart" : "Edit Cart") {
+                        OrderBuilderView(order: order)
                     }
-
-                    OrderTotalView(order: order)
+                    Button("Clear Cart") {
+                        order.clear()
+                    }.disabled(order.isEmpty)
                 }
+
+                OrderTotalView(order: order)
             }
-            .navigationDestination(for: Int.self) { _ in
-                ConfirmationView(transaction: $transaction)
-            }
-            .navigationDestination(for: String.self, destination: { _ in
+            .navigationTitle("Bill")
+            .navigationDestination(for: Order.self, destination: { _ in
                 QRCodeView(transaction: $transaction, order: order)
             })
-            .navigationTitle(transactionType.rawValue.capitalized)
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
             }
