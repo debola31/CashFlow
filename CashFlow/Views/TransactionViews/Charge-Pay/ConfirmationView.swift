@@ -9,16 +9,24 @@ import CoreBluetooth
 import SwiftUI
 
 struct ConfirmationView: View {
+    @EnvironmentObject var user: User
     @StateObject var peripheralDevice = PeripheralDevice()
     @EnvironmentObject var centralDevice: CentralDevice
     @Environment(\.dismiss) var dismiss
     @Binding var transaction: Transaction?
-    var peripheralConnected = false
 
     var body: some View {
         Group {
             if let order = peripheralDevice.receivedOrder {
                 Form {
+                    Section("Available Funds") {
+                        HStack {
+                            Text("Funds:")
+                            Spacer()
+                            Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
+                        }
+                    }
+
                     OrderTotalView(order: order)
 
                     if let device = centralDevice.connectedPeripheral {
@@ -38,8 +46,6 @@ struct ConfirmationView: View {
                             dismiss()
                         }
                     }
-
-//                    Text(peripheralDevice.logs)
                 }
                 .navigationTitle("Confirm Order")
             } else {

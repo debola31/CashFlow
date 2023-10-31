@@ -1,5 +1,5 @@
 //
-//  TransactionView.swift
+//  OrderView.swift
 //  CashFlow
 //
 //  Created by ADEBOLA AKEREDOLU on 10/24/23.
@@ -10,7 +10,7 @@ import CoreBluetooth
 import CoreImage.CIFilterBuiltins
 import SwiftUI
 
-struct TransactionView: View {
+struct OrderView: View {
     let transactionType: Transaction.types
     @EnvironmentObject var user: User
     @StateObject var order: Order
@@ -18,6 +18,8 @@ struct TransactionView: View {
     @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
+    @State var dashAmount: Double = 0
+    let scanningTransactions: [Transaction.types] = [.pay, .collect]
 
     init(transactionType: Transaction.types) {
         self.transactionType = transactionType
@@ -30,18 +32,11 @@ struct TransactionView: View {
         _order = StateObject(wrappedValue: Order())
     }
 
-    var actionText: String {
-        switch transactionType {
-        case .pay:
-            return "Scan Invoice Code"
-        case .dash:
-            return "Generate Dash Code"
-        case .collect:
-            return "Scan Dash Code"
-        case .charge:
-            return "Generate Invoice Code"
-        case .refund:
-            return "Scan Refund Code"
+    func evaluationTransaction() {
+        if order.isEmpty && transactionType == .charge {
+            disableTransaction = true
+        } else {
+            disableTransaction = false
         }
     }
 
@@ -61,23 +56,26 @@ struct TransactionView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
-                Button(actionText) {
-                    switch transactionType {
-                    case .pay, .collect, .refund:
+                Button(transactionType.actionText) {
+                    if scanningTransactions.contains(transactionType) {
                         isShowingScanner = true
-                    case .dash, .charge:
+                    } else {
                         navPath.append("")
                     }
                 }
                 .font(.title3)
                 .buttonStyle(.plain)
                 .padding(30)
-                .background(.blue)
+                .background(disableTransaction ? .gray : .blue)
                 .foregroundStyle(.white)
                 .clipShape(Capsule())
                 .listRowBackground(Color.clear)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .disabled(disableTransaction)
+                .onAppear(perform: evaluationTransaction)
+                .onChange(of: order.isEmpty) {
+                    evaluationTransaction()
+                }
 
                 if transactionType == .charge {
                     Section("Build Menu") {
@@ -107,9 +105,4 @@ struct TransactionView: View {
             }
         }
     }
-}
-
-#Preview {
-    TransactionView(transactionType: .pay)
-        .environmentObject(User())
 }

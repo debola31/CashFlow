@@ -1,23 +1,22 @@
 //
-//  QRCodeView.swift
+//  DashCodeView.swift
 //  CashFlow
 //
-//  Created by ADEBOLA AKEREDOLU on 10/28/23.
+//  Created by ADEBOLA AKEREDOLU on 10/29/23.
 //
 
 import CombineCoreBluetooth
 import SwiftUI
 
-struct QRCodeView: View {
+struct DashCodeView: View {
     @Binding var transaction: Transaction?
+    @EnvironmentObject var dash: Dash
     @EnvironmentObject var user: User
     @EnvironmentObject var centralDevice: CentralDevice
     @StateObject var peripheralDevice = PeripheralDevice()
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var order: Order
     @State private var qrCode = UIImage()
     @State var scannedImage = false
-//    @State var transactionComplete = false
 
     func loadCode() {
         CBUUID.service = CBUUID(string: UUID().uuidString)
@@ -25,10 +24,9 @@ struct QRCodeView: View {
     }
 
     var body: some View {
-//        NavigationStack {
         VStack {
-            Text("Scan Invoice")
-                .font(.largeTitle)
+            Text(scannedImage ? "Waiting for Confirmation" : "Scan Dash")
+                .font(.title)
                 .padding(.bottom, 40)
 
             Image(uiImage: qrCode)
@@ -38,6 +36,20 @@ struct QRCodeView: View {
                 .frame(width: 250, height: 250)
 
             Spacer()
+
+            if let device = centralDevice.connectedPeripheral {
+                DashQRPeripheralView(device, dash)
+                    .onAppear {
+                        scannedImage = true
+                    }
+            } else {
+                ForEach(centralDevice.peripherals) { discovery in
+                    ProgressView()
+                        .onAppear {
+                            centralDevice.connect(discovery)
+                        }
+                }
+            }
 
             Button("Cancel") {
                 dismiss()
@@ -49,17 +61,6 @@ struct QRCodeView: View {
             .background(.black)
             .clipShape(Capsule())
             .padding(.vertical, 20)
-
-            if let device = centralDevice.connectedPeripheral {
-                QRPeripheralView(device, centralDevice, order)
-            } else {
-                ForEach(centralDevice.peripherals) { discovery in
-                    ProgressView()
-                        .onAppear {
-                            centralDevice.connect(discovery)
-                        }
-                }
-            }
         }
         .onAppear {
             loadCode()
@@ -75,13 +76,7 @@ struct QRCodeView: View {
             }
         }
         .onChange(of: peripheralDevice.response) {
-            transaction = Transaction(order: order)
-//            transactionComplete = true
+            transaction = Transaction(dash: dash, type: .dash)
         }
-//        }
     }
 }
-
-// #Preview {
-//    QRCodeView(order: Order())
-// }
