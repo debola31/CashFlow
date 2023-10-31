@@ -25,7 +25,7 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
     @Published private(set) var items = [MenuItem]()
     @Published var totalCost: Double = 0.0
     var id = UUID()
-    var from = ""
+    var to = ""
     var finalCost: Double {
         var cost: Double = 0
         for item in items {
@@ -39,7 +39,7 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
     }
 
     enum CodingKeys: CodingKey {
-        case items, totalCost, id, from
+        case items, totalCost, id, to
     }
 
     init() {}
@@ -49,7 +49,7 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
         items = try container.decode([MenuItem].self, forKey: .items)
         totalCost = try container.decode(Double.self, forKey: .totalCost)
         id = try container.decode(UUID.self, forKey: .id)
-        from = try container.decode(String.self, forKey: .from)
+        to = try container.decode(String.self, forKey: .to)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -58,7 +58,7 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
         try container.encode(items, forKey: .items)
         try container.encode(totalCost, forKey: .totalCost)
         try container.encode(id, forKey: .id)
-        try container.encode(from, forKey: .from)
+        try container.encode(to, forKey: .to)
     }
 
     func hash(into hasher: inout Hasher) {

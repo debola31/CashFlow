@@ -21,11 +21,14 @@
 		0691E78B2AEF74E60061C0CF /* DashCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E78A2AEF74E60061C0CF /* DashCodeView.swift */; };
 		0691E78E2AEF77FC0061C0CF /* DashQRPeripheralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E78D2AEF77FC0061C0CF /* DashQRPeripheralView.swift */; };
 		0691E7902AEF78D00061C0CF /* CollectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E78F2AEF78D00061C0CF /* CollectView.swift */; };
-		0691E7922AEF7ABF0061C0CF /* CollectConfirmationVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E7912AEF7ABF0061C0CF /* CollectConfirmationVIew.swift */; };
+		0691E7922AEF7ABF0061C0CF /* CollectConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E7912AEF7ABF0061C0CF /* CollectConfirmationView.swift */; };
 		0691E7942AEFE7350061C0CF /* CollectConfirmationPeripheralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0691E7932AEFE7350061C0CF /* CollectConfirmationPeripheralView.swift */; };
 		06A051952AF0638E00600BBC /* Confirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A051942AF0638E00600BBC /* Confirmation.swift */; };
 		06A051982AF07C8300600BBC /* QRPeripheralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A051972AF07C8300600BBC /* QRPeripheralView.swift */; };
 		06A0519A2AF07E8500600BBC /* PayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A051992AF07E8500600BBC /* PayView.swift */; };
+		06A0519C2AF0897B00600BBC /* AccountHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A0519B2AF0897B00600BBC /* AccountHistoryView.swift */; };
+		06A0519E2AF08A6300600BBC /* HistoryItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A0519D2AF08A6300600BBC /* HistoryItemView.swift */; };
+		06A051A02AF0934400600BBC /* DeleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A0519F2AF0934400600BBC /* DeleteProfileView.swift */; };
 		06CA910A2AEDBEAA004DFA7A /* OrderTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CA91092AEDBEAA004DFA7A /* OrderTotalView.swift */; };
 		3033658E2AE9FF4500C12927 /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033658D2AE9FF4500C12927 /* ReceiptView.swift */; };
 		303365922AEA1D8700C12927 /* NewProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303365912AEA1D8700C12927 /* NewProfileView.swift */; };
@@ -46,7 +49,7 @@
 		30B11F022AE8843100ACBB90 /* CashFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F012AE8843100ACBB90 /* CashFlowTests.swift */; };
 		30B11F0C2AE8843100ACBB90 /* CashFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F0B2AE8843100ACBB90 /* CashFlowUITests.swift */; };
 		30B11F0E2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F0D2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift */; };
-		30B11F1D2AE8898D00ACBB90 /* ChargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1C2AE8898D00ACBB90 /* ChargeView.swift */; };
+		30B11F1D2AE8898D00ACBB90 /* BillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1C2AE8898D00ACBB90 /* BillView.swift */; };
 		30B11F1F2AE889F000ACBB90 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B11F1E2AE889F000ACBB90 /* SummaryView.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,11 +84,14 @@
 		0691E78A2AEF74E60061C0CF /* DashCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashCodeView.swift; sourceTree = "<group>"; };
 		0691E78D2AEF77FC0061C0CF /* DashQRPeripheralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashQRPeripheralView.swift; sourceTree = "<group>"; };
 		0691E78F2AEF78D00061C0CF /* CollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectView.swift; sourceTree = "<group>"; };
-		0691E7912AEF7ABF0061C0CF /* CollectConfirmationVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectConfirmationVIew.swift; sourceTree = "<group>"; };
+		0691E7912AEF7ABF0061C0CF /* CollectConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectConfirmationView.swift; sourceTree = "<group>"; };
 		0691E7932AEFE7350061C0CF /* CollectConfirmationPeripheralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectConfirmationPeripheralView.swift; sourceTree = "<group>"; };
 		06A051942AF0638E00600BBC /* Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confirmation.swift; sourceTree = "<group>"; };
 		06A051972AF07C8300600BBC /* QRPeripheralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRPeripheralView.swift; sourceTree = "<group>"; };
 		06A051992AF07E8500600BBC /* PayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayView.swift; sourceTree = "<group>"; };
+		06A0519B2AF0897B00600BBC /* AccountHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHistoryView.swift; sourceTree = "<group>"; };
+		06A0519D2AF08A6300600BBC /* HistoryItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemView.swift; sourceTree = "<group>"; };
+		06A0519F2AF0934400600BBC /* DeleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteProfileView.swift; sourceTree = "<group>"; };
 		06CA91092AEDBEAA004DFA7A /* OrderTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTotalView.swift; sourceTree = "<group>"; };
 		3033658D2AE9FF4500C12927 /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		303365912AEA1D8700C12927 /* NewProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileView.swift; sourceTree = "<group>"; };
@@ -108,7 +114,7 @@
 		30B11F072AE8843100ACBB90 /* CashFlowUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CashFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30B11F0B2AE8843100ACBB90 /* CashFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowUITests.swift; sourceTree = "<group>"; };
 		30B11F0D2AE8843100ACBB90 /* CashFlowUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		30B11F1C2AE8898D00ACBB90 /* ChargeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeView.swift; sourceTree = "<group>"; };
+		30B11F1C2AE8898D00ACBB90 /* BillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillView.swift; sourceTree = "<group>"; };
 		30B11F1E2AE889F000ACBB90 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,8 +160,9 @@
 			children = (
 				309EEBC72AEB375700C9C68A /* OrderBuilderView.swift */,
 				3033658D2AE9FF4500C12927 /* ReceiptView.swift */,
+				06A0519D2AF08A6300600BBC /* HistoryItemView.swift */,
 				06CA91092AEDBEAA004DFA7A /* OrderTotalView.swift */,
-				06A051962AF0796100600BBC /* Charge-Pay */,
+				06A051962AF0796100600BBC /* Bill-Pay */,
 				0691E78C2AEF77E40061C0CF /* Dash-Collect */,
 			);
 			path = TransactionViews;
@@ -167,8 +174,10 @@
 				060E45E62AEDE8D900241951 /* TransactionViews */,
 				30B11EF22AE8842F00ACBB90 /* ContentView.swift */,
 				3054F61A2AE9925C001F9FB6 /* ProfileView.swift */,
+				06A0519B2AF0897B00600BBC /* AccountHistoryView.swift */,
 				303365912AEA1D8700C12927 /* NewProfileView.swift */,
 				30B11F1E2AE889F000ACBB90 /* SummaryView.swift */,
+				06A0519F2AF0934400600BBC /* DeleteProfileView.swift */,
 				309EEBC32AEB294000C9C68A /* ItemCreationView.swift */,
 				309EEBC12AEAC4D800C9C68A /* NewBankView.swift */,
 				3054F6162AE97DE8001F9FB6 /* TransferView.swift */,
@@ -207,23 +216,23 @@
 				0691E7882AEF6CFA0061C0CF /* DashView.swift */,
 				0691E78D2AEF77FC0061C0CF /* DashQRPeripheralView.swift */,
 				0691E78F2AEF78D00061C0CF /* CollectView.swift */,
-				0691E7912AEF7ABF0061C0CF /* CollectConfirmationVIew.swift */,
+				0691E7912AEF7ABF0061C0CF /* CollectConfirmationView.swift */,
 				0691E7932AEFE7350061C0CF /* CollectConfirmationPeripheralView.swift */,
 			);
 			path = "Dash-Collect";
 			sourceTree = "<group>";
 		};
-		06A051962AF0796100600BBC /* Charge-Pay */ = {
+		06A051962AF0796100600BBC /* Bill-Pay */ = {
 			isa = PBXGroup;
 			children = (
 				066218EA2AEC8F2100220867 /* ConfirmationPeripheralView.swift */,
 				06A051972AF07C8300600BBC /* QRPeripheralView.swift */,
 				066218F12AED455800220867 /* QRCodeView.swift */,
 				309476AF2AE9F3A700727706 /* ConfirmationView.swift */,
-				30B11F1C2AE8898D00ACBB90 /* ChargeView.swift */,
+				30B11F1C2AE8898D00ACBB90 /* BillView.swift */,
 				06A051992AF07E8500600BBC /* PayView.swift */,
 			);
-			path = "Charge-Pay";
+			path = "Bill-Pay";
 			sourceTree = "<group>";
 		};
 		30B11EE42AE8842F00ACBB90 = {
@@ -426,13 +435,14 @@
 				3054F6172AE97DE8001F9FB6 /* TransferView.swift in Sources */,
 				066218E92AEC7D3900220867 /* ConnectedPeripheral.swift in Sources */,
 				0691E78B2AEF74E60061C0CF /* DashCodeView.swift in Sources */,
-				30B11F1D2AE8898D00ACBB90 /* ChargeView.swift in Sources */,
+				30B11F1D2AE8898D00ACBB90 /* BillView.swift in Sources */,
 				066218ED2AEC942800220867 /* PeripheralDevice.swift in Sources */,
 				0691E78E2AEF77FC0061C0CF /* DashQRPeripheralView.swift in Sources */,
 				0652F3852AE8A22100052C8D /* Transaction.swift in Sources */,
 				06A0519A2AF07E8500600BBC /* PayView.swift in Sources */,
 				060E45E32AEDE89000241951 /* Dash.swift in Sources */,
 				066218F22AED455800220867 /* QRCodeView.swift in Sources */,
+				06A051A02AF0934400600BBC /* DeleteProfileView.swift in Sources */,
 				0652F3832AE89F1D00052C8D /* UserProfile.swift in Sources */,
 				0691E7902AEF78D00061C0CF /* CollectView.swift in Sources */,
 				0652F3812AE89EFB00052C8D /* User.swift in Sources */,
@@ -441,13 +451,15 @@
 				06A051982AF07C8300600BBC /* QRPeripheralView.swift in Sources */,
 				309476B02AE9F3A700727706 /* ConfirmationView.swift in Sources */,
 				303365922AEA1D8700C12927 /* NewProfileView.swift in Sources */,
+				06A0519C2AF0897B00600BBC /* AccountHistoryView.swift in Sources */,
 				309EEBC62AEB29A500C9C68A /* Order.swift in Sources */,
 				30B11F1F2AE889F000ACBB90 /* SummaryView.swift in Sources */,
-				0691E7922AEF7ABF0061C0CF /* CollectConfirmationVIew.swift in Sources */,
+				0691E7922AEF7ABF0061C0CF /* CollectConfirmationView.swift in Sources */,
 				309EEBC42AEB294000C9C68A /* ItemCreationView.swift in Sources */,
 				06A051952AF0638E00600BBC /* Confirmation.swift in Sources */,
 				309EEBC22AEAC4D800C9C68A /* NewBankView.swift in Sources */,
 				06CA910A2AEDBEAA004DFA7A /* OrderTotalView.swift in Sources */,
+				06A0519E2AF08A6300600BBC /* HistoryItemView.swift in Sources */,
 				066218E72AEC663B00220867 /* CentralDevice.swift in Sources */,
 				30B11EF32AE8842F00ACBB90 /* ContentView.swift in Sources */,
 				3033658E2AE9FF4500C12927 /* ReceiptView.swift in Sources */,

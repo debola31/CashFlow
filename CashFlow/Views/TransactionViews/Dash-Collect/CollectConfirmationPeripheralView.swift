@@ -37,8 +37,8 @@ struct CollectConfirmationPeripheralView: View {
             }
 
             Button {
-                paying = true
                 acceptDate = Date()
+                paying = true
             } label: {
                 HStack {
                     Text("Accept")

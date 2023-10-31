@@ -60,6 +60,14 @@ class CentralDevice: ObservableObject {
             .assign(to: &$peripheralConnectResult)
     }
 
+    func directConnect(_ peripheral: Peripheral) {
+        centralManager.connect(peripheral)
+            .map(Result.success)
+            .catch { Just(Result.failure($0)) }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$peripheralConnectResult)
+    }
+
     // For QR Code generation
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()

@@ -36,6 +36,11 @@ struct ProfileView: View {
                 Section {
                     NavigationLink("Add New Profile") {
                         NewProfileView()
+                            .navigationTitle("New Profile")
+                    }
+                    NavigationLink("Delete Profiles") {
+                        DeleteProfileView()
+                            .navigationTitle("Delete Profiles")
                     }
                 }
 

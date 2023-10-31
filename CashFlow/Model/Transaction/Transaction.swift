@@ -13,16 +13,7 @@ struct Transaction: Hashable, Codable, Identifiable, Comparable {
     }
 
     enum types: String, Codable {
-        case dash, charge
-
-        var actionText: String {
-            switch self {
-            case .dash:
-                return "Generate Dash Code"
-            case .charge:
-                return "Generate Invoice Code"
-            }
-        }
+        case dash, bill
     }
 
     var date = Date()

@@ -16,7 +16,7 @@ struct QRPeripheralView: View {
         self.device = .init(peripheral)
         self.order = order
 
-        if let data = try? JSONEncoder().encode(order.items) {
+        if let data = try? JSONEncoder().encode(order) {
             device.write(
                 data: data,
                 to: .writeResponseCharacteristic,

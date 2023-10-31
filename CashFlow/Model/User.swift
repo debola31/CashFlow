@@ -49,6 +49,11 @@ class User: ObservableObject, Codable {
         syncProfiles()
     }
 
+    func deleteProfile(_ indexSet: IndexSet) {
+        profiles.remove(atOffsets: indexSet)
+        syncProfiles()
+    }
+
     func setActiveProfile(_ profile: UserProfile) {
         activeProfile = profile
         syncProfiles()
@@ -96,5 +101,11 @@ class User: ObservableObject, Codable {
         if let encoded = try? JSONEncoder().encode(self) {
             UserDefaults.standard.set(encoded, forKey: UserProfile.saveKey)
         }
+    }
+
+    func addTransaction(_ transaction: Transaction) {
+        activeProfile.accountHistory.append(transaction)
+        activeProfile.accountHistory.sort()
+        syncProfiles()
     }
 }

@@ -82,9 +82,9 @@ struct QRCodeView: View {
                     transaction = Transaction(
                         date: confirmedOrder.date,
                         order: confirmedOrder.order,
-                        payer: confirmedOrder.order.from,
-                        payee: confirmedOrder.from,
-                        type: .charge)
+                        payer: confirmedOrder.from,
+                        payee: confirmedOrder.order.to,
+                        type: .bill)
                 }
             }
         }

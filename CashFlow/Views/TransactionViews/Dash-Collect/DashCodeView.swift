@@ -38,10 +38,13 @@ struct DashCodeView: View {
             Spacer()
 
             if let device = centralDevice.connectedPeripheral {
-                DashQRPeripheralView(device, dash)
-                    .onAppear {
-                        scannedImage = true
-                    }
+                if transaction == nil {
+                    DashQRPeripheralView(device, dash)
+                        .onAppear {
+                            scannedImage = true
+                        }
+                }
+
             } else {
                 ForEach(centralDevice.peripherals) { discovery in
                     ProgressView()
@@ -71,9 +74,6 @@ struct DashCodeView: View {
             centralDevice.stopSearching()
             centralDevice.peripheralConnectResult = nil
             peripheralDevice.stop()
-            if let device = centralDevice.connectedPeripheral {
-                centralDevice.centralManager.cancelPeripheralConnection(device)
-            }
         }
         .onChange(of: peripheralDevice.receivedDashConfirmation) {
             if let confirmedDash = peripheralDevice.receivedDashConfirmation {

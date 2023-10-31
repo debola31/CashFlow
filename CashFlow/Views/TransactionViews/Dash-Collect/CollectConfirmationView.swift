@@ -1,5 +1,5 @@
 //
-//  CollectConfirmationVIew.swift
+//  CollectConfirmationView.swift
 //  CashFlow
 //
 //  Created by ADEBOLA AKEREDOLU on 10/29/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CollectConfirmationVIew: View {
+struct CollectConfirmationView: View {
     @StateObject var peripheralDevice = PeripheralDevice()
     @EnvironmentObject var centralDevice: CentralDevice
     @Environment(\.dismiss) var dismiss
@@ -55,11 +55,9 @@ struct CollectConfirmationVIew: View {
         .onDisappear {
             peripheralDevice.stop()
             peripheralDevice.receivedOrder = nil
-//            centralDevice.stopSearching()
-//            centralDevice.peripheralConnectResult = nil
-            if let device = centralDevice.connectedPeripheral {
-                centralDevice.centralManager.cancelPeripheralConnection(device)
-            }
+//            if let device = centralDevice.connectedPeripheral {
+//                centralDevice.centralManager.cancelPeripheralConnection(device)
+//            }
         }
     }
 }

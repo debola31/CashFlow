@@ -14,7 +14,6 @@ class PeripheralDevice: ObservableObject {
     @Published var advertising: Bool = false
     @Published var receivedOrder: Order?
     @Published var receivedDash: Dash?
-    @Published var response: String?
     @Published var receivedDashConfirmation: DashConfirmation?
     @Published var receivedOrderConfirmation: OrderConfirmation?
     var cancellables = Set<AnyCancellable>()
@@ -31,11 +30,10 @@ class PeripheralDevice: ObservableObject {
                 }.joined(separator: "\n"), to: &self.logs)
 
                 _ = requests.map { r in
-                    if let items = try? JSONDecoder().decode([MenuItem].self, from: r.value ?? Data()) {
+
+                    if let order = try? JSONDecoder().decode(Order.self, from: r.value ?? Data()) {
                         print("Received Order")
-                        print(items)
-                        self.receivedOrder = Order()
-                        self.receivedOrder?.loadItems(items)
+                        self.receivedOrder = order
                     }
 
                     if let dash = try? JSONDecoder().decode(Dash.self, from: r.value ?? Data()) {
@@ -52,21 +50,13 @@ class PeripheralDevice: ObservableObject {
                         print("Received Confirmation")
                         self.receivedOrderConfirmation = confirmation
                     }
-
-                    if let response = String(bytes: r.value ?? Data(), encoding: .utf8) {
-                        print("Received Response")
-                        print(response)
-                        self.response = response
-                    }
                 }
 
                 for request in requests {
-                    for _ in 1 ... 10 {
-                        self.peripheralManager.respond(to: request, withResult: .success)
-                    }
+//                    for _ in 1 ... 10 {
+                    self.peripheralManager.respond(to: request, withResult: .success)
+//                    }
                 }
-
-//                self.peripheralManager.respond(to: requests[0], withResult: .success)
                 print("responded")
             }
             .store(in: &cancellables)
@@ -102,6 +92,7 @@ class PeripheralDevice: ObservableObject {
 
     func stop() {
         peripheralManager.stopAdvertising()
+        peripheralManager.removeAllServices()
         cancellables = []
         advertising = false
     }

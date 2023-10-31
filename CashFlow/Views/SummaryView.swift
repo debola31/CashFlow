@@ -45,7 +45,8 @@ struct SummaryView: View {
 
                 Section {
                     NavigationLink("Account History") {
-                        Text("Account History")
+                        AccountHistoryView()
+                            .navigationTitle("Account History")
                     }
                 }
             }

@@ -57,9 +57,9 @@ struct ConfirmationPeripheralView: View {
                             let newTransaction = Transaction(
                                 date: paidDate,
                                 order: order,
-                                payer: order.from,
-                                payee: user.activeProfile.name,
-                                type: .charge
+                                payer: user.activeProfile.name,
+                                payee: order.to,
+                                type: .bill
                             )
                             paying = false
                             user.takeOutFunds(order.finalCost)

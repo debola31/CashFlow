@@ -41,7 +41,7 @@ struct PayView: View {
                 .font(.title3)
                 .buttonStyle(.plain)
                 .padding(30)
-                .background(.brown)
+                .background(.blue)
                 .foregroundStyle(.white)
                 .clipShape(Capsule())
                 .listRowBackground(Color.clear)

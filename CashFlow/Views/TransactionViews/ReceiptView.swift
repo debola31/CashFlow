@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ReceiptView: View {
+    @EnvironmentObject var user: User
+    @EnvironmentObject var centralDevice: CentralDevice
     @Environment(\.dismiss) var dismiss
     @Binding var navPath: NavigationPath
     let transaction: Transaction
@@ -21,12 +23,24 @@ struct ReceiptView: View {
                 }
 
                 if let order = transaction.order {
-                    Text("Business name: \(transaction.payee ?? "")")
-                    Text("Order by: \(transaction.payer ?? "")")
                     HStack {
-                        Text("Total:")
+                        Text("Business:")
                         Spacer()
-                        Text(order.finalCost, format: .currency(code: "USD"))
+                        Text(transaction.payee ?? "")
+                    }
+
+                    HStack {
+                        Text("Client:")
+                        Spacer()
+                        Text(transaction.payer ?? "")
+                    }
+
+                    Section {
+                        HStack {
+                            Text("Total:")
+                            Spacer()
+                            Text(order.finalCost, format: .currency(code: "USD"))
+                        }
                     }
 
                     Section("Items") {
@@ -55,7 +69,7 @@ struct ReceiptView: View {
                         }
 
                         HStack {
-                            Text("Total:")
+                            Text("Amount:")
                             Spacer()
                             Text(dash.amount, format: .currency(code: "USD"))
                         }
@@ -68,6 +82,13 @@ struct ReceiptView: View {
                 }
             }
             .navigationTitle("\(transaction.type.rawValue.capitalized) Receipt")
+            .onAppear {
+                user.addTransaction(transaction)
+            }
+            .onDisappear {
+                centralDevice.stopSearching()
+                centralDevice.peripheralConnectResult = nil
+            }
         }
     }
 }

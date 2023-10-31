@@ -30,7 +30,7 @@ struct ContentView: View {
                 }
 
             if user.activeProfile.type == .individual {
-                OrderView(transactionType: .pay)
+                PayView()
                     .tabItem {
                         Label("Pay", systemImage: "dollarsign")
                     }
@@ -45,9 +45,9 @@ struct ContentView: View {
                         Label("Collect", systemImage: "arrow.down.right.square.fill")
                     }
             } else if user.activeProfile.type == .business {
-                OrderView(transactionType: .charge)
+                BillView()
                     .tabItem {
-                        Label("Charge", systemImage: "dollarsign")
+                        Label("Bill", systemImage: "dollarsign")
                     }
             }
         }

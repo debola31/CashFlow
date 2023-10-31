@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct DashView: View {
-    let transactionType: Transaction.types = .dash
     @EnvironmentObject var user: User
     @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
     @State var dashAmount: Double = 0
     @StateObject var dash = Dash()
-    @FocusState private var nameIsFocused: Bool
 
     func evaluateAmount() {
         if dashAmount > user.activeProfile.availableFunds || dashAmount == 0 {
@@ -28,7 +26,7 @@ struct DashView: View {
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
-                Button(transactionType.actionText) {
+                Button("Generate Dash Code") {
                     dash.from = user.activeProfile.name
                     dash.amount = dashAmount
                     dashAmount = 0
@@ -60,7 +58,7 @@ struct DashView: View {
                     }
                 }
             }
-            .navigationTitle(transactionType.rawValue.capitalized)
+            .navigationTitle("Dash")
             .navigationDestination(for: Dash.self, destination: { _ in
                 DashCodeView(transaction: $transaction)
                     .environmentObject(dash)

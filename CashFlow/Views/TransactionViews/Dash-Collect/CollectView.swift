@@ -13,7 +13,6 @@ struct CollectView: View {
     @EnvironmentObject var user: User
     @State var isShowingScanner = false
     @State var navPath = NavigationPath()
-    @State var disableTransaction = false
     @State var transaction: Transaction?
     @StateObject var dash = Dash()
 
@@ -44,11 +43,10 @@ struct CollectView: View {
                 .clipShape(Capsule())
                 .listRowBackground(Color.clear)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .disabled(disableTransaction)
             }
             .navigationTitle("Collect")
             .navigationDestination(for: Dash.self) { _ in
-                CollectConfirmationVIew(transaction: $transaction)
+                CollectConfirmationView(transaction: $transaction)
             }
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)

@@ -10,7 +10,7 @@ import CoreBluetooth
 import CoreImage.CIFilterBuiltins
 import SwiftUI
 
-struct ChargeView: View {
+struct BillView: View {
     @EnvironmentObject var user: User
     @StateObject var order: Order
     @State var isShowingScanner = false
@@ -18,7 +18,7 @@ struct ChargeView: View {
     @State var disableTransaction = false
     @State var transaction: Transaction?
 
-    init(transactionType: Transaction.types) {
+    init() {
         if let data = UserDefaults.standard.data(forKey: MenuItem.orderSaveKey) {
             if let decoded = try? JSONDecoder().decode(Order.self, from: data) {
                 _order = StateObject(wrappedValue: decoded)
@@ -36,24 +36,11 @@ struct ChargeView: View {
         }
     }
 
-    func handleScan(result: Result<ScanResult, ScanError>) {
-        isShowingScanner = false
-        switch result {
-        case .success(let result):
-            // Set Bluetooth Service String
-            CBUUID.service = CBUUID(string: result.string)
-            navPath.append(order)
-
-        case .failure(let error):
-            print("Scanning failed: \(error.localizedDescription)")
-        }
-    }
-
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
                 Button("Generate Invoice Code") {
-                    order.from = user.activeProfile.name
+                    order.to = user.activeProfile.name
                     navPath.append(order)
                 }
                 .font(.title3)
@@ -85,11 +72,11 @@ struct ChargeView: View {
             .navigationDestination(for: Order.self, destination: { _ in
                 QRCodeView(transaction: $transaction, order: order)
             })
-            .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
-            }
             .sheet(item: $transaction) { transaction in
                 ReceiptView(navPath: $navPath, transaction: transaction)
+                    .onAppear {
+                        order.clear()
+                    }
             }
         }
     }
