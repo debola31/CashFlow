@@ -1,5 +1,5 @@
 //
-//  ConnectedPeripheralView.swift
+//  ConfirmationPeripheralView.swift
 //  CashFlow
 //
 //  Created by ADEBOLA AKEREDOLU on 10/27/23.
@@ -15,6 +15,7 @@ struct ConfirmationPeripheralView: View {
     @ObservedObject var order: Order
     @Binding var transaction: Transaction?
     @State var paying = false
+    @State var paidDate = Date()
 
     init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order, _ transaction: Binding<Transaction?>) {
         self.device = .init(peripheral)
@@ -36,6 +37,7 @@ struct ConfirmationPeripheralView: View {
 
             Button {
                 paying = true
+                paidDate = Date()
             } label: {
                 HStack {
                     Text("Pay")
@@ -52,7 +54,13 @@ struct ConfirmationPeripheralView: View {
                         print("Appeared")
                         switch result {
                         case .success:
-                            let newTransaction = Transaction(order: order, type: .charge)
+                            let newTransaction = Transaction(
+                                date: paidDate,
+                                order: order,
+                                payer: order.from,
+                                payee: user.activeProfile.name,
+                                type: .charge
+                            )
                             paying = false
                             user.takeOutFunds(order.finalCost)
                             transaction = newTransaction

@@ -5,14 +5,57 @@
 //  Created by ADEBOLA AKEREDOLU on 10/29/23.
 //
 
+import CodeScanner
+import CoreBluetooth
 import SwiftUI
 
 struct CollectView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @EnvironmentObject var user: User
+    @State var isShowingScanner = false
+    @State var navPath = NavigationPath()
+    @State var disableTransaction = false
+    @State var transaction: Transaction?
+    @StateObject var dash = Dash()
 
-#Preview {
-    CollectView()
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        isShowingScanner = false
+        switch result {
+        case .success(let result):
+            // Set Bluetooth Service String
+            CBUUID.service = CBUUID(string: result.string)
+            navPath.append(dash)
+
+        case .failure(let error):
+            print("Scanning failed: \(error.localizedDescription)")
+        }
+    }
+
+    var body: some View {
+        NavigationStack(path: $navPath) {
+            Form {
+                Button("Scan Dash Code") {
+                    isShowingScanner = true
+                }
+                .font(.title3)
+                .buttonStyle(.plain)
+                .padding(30)
+                .background(.brown)
+                .foregroundStyle(.white)
+                .clipShape(Capsule())
+                .listRowBackground(Color.clear)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .disabled(disableTransaction)
+            }
+            .navigationTitle("Collect")
+            .navigationDestination(for: Dash.self) { _ in
+                CollectConfirmationVIew(transaction: $transaction)
+            }
+            .sheet(isPresented: $isShowingScanner) {
+                CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+            }
+            .sheet(item: $transaction) { transaction in
+                ReceiptView(navPath: $navPath, transaction: transaction)
+            }
+        }
+    }
 }

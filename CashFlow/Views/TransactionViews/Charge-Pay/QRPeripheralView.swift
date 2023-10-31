@@ -5,14 +5,28 @@
 //  Created by ADEBOLA AKEREDOLU on 10/30/23.
 //
 
+import CombineCoreBluetooth
 import SwiftUI
 
 struct QRPeripheralView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @ObservedObject var device: ConnectedPeripheral
+    @ObservedObject var order: Order
 
-#Preview {
-    QRPeripheralView()
+    init(_ peripheral: Peripheral, _ order: Order) {
+        self.device = .init(peripheral)
+        self.order = order
+
+        if let data = try? JSONEncoder().encode(order.items) {
+            device.write(
+                data: data,
+                to: .writeResponseCharacteristic,
+                type: .withResponse,
+                result: \ConnectedPeripheral.$writeResponseResult
+            )
+        }
+    }
+
+    var body: some View {
+        ProgressView()
+    }
 }

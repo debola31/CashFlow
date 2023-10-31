@@ -30,29 +30,24 @@ struct ContentView: View {
                 }
 
             if user.activeProfile.type == .individual {
-                TransactionView(transactionType: .pay)
+                OrderView(transactionType: .pay)
                     .tabItem {
                         Label("Pay", systemImage: "dollarsign")
                     }
 
-                TransactionView(transactionType: .dash)
+                DashView()
                     .tabItem {
                         Label("Dash", systemImage: "arrow.up.right.square.fill")
                     }
 
-                TransactionView(transactionType: .collect)
+                CollectView()
                     .tabItem {
-                        Label("Collect", systemImage: "hands.sparkles.fill")
+                        Label("Collect", systemImage: "arrow.down.right.square.fill")
                     }
             } else if user.activeProfile.type == .business {
-                TransactionView(transactionType: .charge)
+                OrderView(transactionType: .charge)
                     .tabItem {
                         Label("Charge", systemImage: "dollarsign")
-                    }
-
-                TransactionView(transactionType: .refund)
-                    .tabItem {
-                        Label("Refund", systemImage: "dollarsign.arrow.circlepath")
                     }
             }
         }

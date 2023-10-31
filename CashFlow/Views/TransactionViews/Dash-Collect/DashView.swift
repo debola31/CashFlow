@@ -8,24 +8,36 @@
 import SwiftUI
 
 struct DashView: View {
+    let transactionType: Transaction.types = .dash
     @EnvironmentObject var user: User
     @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
     @State var dashAmount: Double = 0
     @StateObject var dash = Dash()
+    @FocusState private var nameIsFocused: Bool
+
+    func evaluateAmount() {
+        if dashAmount > user.activeProfile.availableFunds || dashAmount == 0 {
+            disableTransaction = true
+        } else {
+            disableTransaction = false
+        }
+    }
 
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
-                Button(Transaction.types.dash.actionText) {
+                Button(transactionType.actionText) {
+                    dash.from = user.activeProfile.name
                     dash.amount = dashAmount
+                    dashAmount = 0
                     navPath.append(dash)
                 }
                 .font(.title3)
                 .buttonStyle(.plain)
                 .padding(30)
-                .background(.brown)
+                .background(disableTransaction ? .gray : .brown)
                 .foregroundStyle(.white)
                 .clipShape(Capsule())
                 .listRowBackground(Color.clear)
@@ -34,6 +46,10 @@ struct DashView: View {
 
                 Section("Dash Amount") {
                     TextField("Dash Amount", value: $dashAmount, format: .currency(code: "USD"))
+                        .onChange(of: dashAmount) {
+                            evaluateAmount()
+                        }
+                        .onAppear(perform: evaluateAmount)
                     HStack {
                         Text("Max:")
                         Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
@@ -44,11 +60,14 @@ struct DashView: View {
                     }
                 }
             }
-            .navigationTitle(Transaction.types.dash.rawValue.capitalized)
-            .navigationDestination(for: Dash.self, destination: { dash in
+            .navigationTitle(transactionType.rawValue.capitalized)
+            .navigationDestination(for: Dash.self, destination: { _ in
                 DashCodeView(transaction: $transaction)
                     .environmentObject(dash)
             })
+            .sheet(item: $transaction) { transaction in
+                ReceiptView(navPath: $navPath, transaction: transaction)
+            }
         }
     }
 }

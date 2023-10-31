@@ -13,7 +13,10 @@ class PeripheralDevice: ObservableObject {
     @Published var logs: String = ""
     @Published var advertising: Bool = false
     @Published var receivedOrder: Order?
+    @Published var receivedDash: Dash?
     @Published var response: String?
+    @Published var receivedDashConfirmation: DashConfirmation?
+    @Published var receivedOrderConfirmation: OrderConfirmation?
     var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -34,6 +37,22 @@ class PeripheralDevice: ObservableObject {
                         self.receivedOrder = Order()
                         self.receivedOrder?.loadItems(items)
                     }
+
+                    if let dash = try? JSONDecoder().decode(Dash.self, from: r.value ?? Data()) {
+                        print("Received Dash")
+                        self.receivedDash = dash
+                    }
+
+                    if let confirmation = try? JSONDecoder().decode(DashConfirmation.self, from: r.value ?? Data()) {
+                        print("Received Confirmation")
+                        self.receivedDashConfirmation = confirmation
+                    }
+
+                    if let confirmation = try? JSONDecoder().decode(OrderConfirmation.self, from: r.value ?? Data()) {
+                        print("Received Confirmation")
+                        self.receivedOrderConfirmation = confirmation
+                    }
+
                     if let response = String(bytes: r.value ?? Data(), encoding: .utf8) {
                         print("Received Response")
                         print(response)

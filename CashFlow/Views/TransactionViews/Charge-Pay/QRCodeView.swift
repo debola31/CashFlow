@@ -75,9 +75,18 @@ struct QRCodeView: View {
                 centralDevice.centralManager.cancelPeripheralConnection(device)
             }
         }
-        .onChange(of: peripheralDevice.response) {
-            user.addFunds(order.totalCost)
-            transaction = Transaction(order: order, type: .pay)
+        .onChange(of: peripheralDevice.receivedOrderConfirmation) {
+            if let confirmedOrder = peripheralDevice.receivedOrderConfirmation {
+                if transaction == nil {
+                    user.addFunds(order.totalCost)
+                    transaction = Transaction(
+                        date: confirmedOrder.date,
+                        order: confirmedOrder.order,
+                        payer: confirmedOrder.order.from,
+                        payee: confirmedOrder.from,
+                        type: .charge)
+                }
+            }
         }
     }
 }

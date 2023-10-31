@@ -75,8 +75,18 @@ struct DashCodeView: View {
                 centralDevice.centralManager.cancelPeripheralConnection(device)
             }
         }
-        .onChange(of: peripheralDevice.response) {
-            transaction = Transaction(dash: dash, type: .dash)
+        .onChange(of: peripheralDevice.receivedDashConfirmation) {
+            if let confirmedDash = peripheralDevice.receivedDashConfirmation {
+                if transaction == nil {
+                    user.takeOutFunds(confirmedDash.dash.amount)
+                    transaction = Transaction(
+                        date: confirmedDash.date,
+                        dash: confirmedDash.dash,
+                        payer: confirmedDash.dash.from,
+                        payee: confirmedDash.from,
+                        type: .dash)
+                }
+            }
         }
     }
 }

@@ -11,14 +11,13 @@ struct OrderTotalView: View {
     @ObservedObject var order: Order
 
     var body: some View {
-        Section("Total") {
+        Section {
             HStack {
                 Text("Total:")
                 Spacer()
                 Text(order.totalCost, format: .currency(code: "USD"))
             }
-            .onAppear(perform: order.calculateTotal)
-        }
+        }.onAppear(perform: order.calculateTotal)
 
         Section("Items") {
             ForEach(order.items) { item in

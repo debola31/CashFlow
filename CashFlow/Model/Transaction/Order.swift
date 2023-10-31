@@ -21,10 +21,11 @@ struct MenuItem: Hashable, Identifiable, Comparable, Codable {
     static let exampleItems = [MenuItem(name: "Ex1", cost: 50), MenuItem(name: "Ex2", cost: 60)]
 }
 
-class Order: ObservableObject, Equatable, Hashable, Codable {
+class Order: ObservableObject, Hashable, Codable, Identifiable {
     @Published private(set) var items = [MenuItem]()
     @Published var totalCost: Double = 0.0
     var id = UUID()
+    var from = ""
     var finalCost: Double {
         var cost: Double = 0
         for item in items {
@@ -38,7 +39,7 @@ class Order: ObservableObject, Equatable, Hashable, Codable {
     }
 
     enum CodingKeys: CodingKey {
-        case items, totalCost, id
+        case items, totalCost, id, from
     }
 
     init() {}
@@ -48,6 +49,7 @@ class Order: ObservableObject, Equatable, Hashable, Codable {
         items = try container.decode([MenuItem].self, forKey: .items)
         totalCost = try container.decode(Double.self, forKey: .totalCost)
         id = try container.decode(UUID.self, forKey: .id)
+        from = try container.decode(String.self, forKey: .from)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -56,6 +58,7 @@ class Order: ObservableObject, Equatable, Hashable, Codable {
         try container.encode(items, forKey: .items)
         try container.encode(totalCost, forKey: .totalCost)
         try container.encode(id, forKey: .id)
+        try container.encode(from, forKey: .from)
     }
 
     func hash(into hasher: inout Hasher) {

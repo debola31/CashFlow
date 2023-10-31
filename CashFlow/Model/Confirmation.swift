@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+struct DashConfirmation: Identifiable, Codable, Hashable {
+    var id = UUID()
+    var date: Date
+    var from: String
+    var dash: Dash
+}
+
+struct OrderConfirmation: Identifiable, Codable, Hashable {
+    var id = UUID()
+    var date: Date
+    var from: String
+    var order: Order
+}
