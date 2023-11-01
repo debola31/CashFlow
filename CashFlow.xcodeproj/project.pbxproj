@@ -38,6 +38,7 @@
 		3054F61F2AE994BD001F9FB6 /* BankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3054F61E2AE994BD001F9FB6 /* BankAccount.swift */; };
 		3054F6242AE9E32F001F9FB6 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 3054F6232AE9E32F001F9FB6 /* CodeScanner */; };
 		309476B02AE9F3A700727706 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309476AF2AE9F3A700727706 /* ConfirmationView.swift */; };
+		309D9D5B2AF17158006D527C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 309D9D5A2AF17158006D527C /* Launch Screen.storyboard */; };
 		309EEBC22AEAC4D800C9C68A /* NewBankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EEBC12AEAC4D800C9C68A /* NewBankView.swift */; };
 		309EEBC42AEB294000C9C68A /* ItemCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EEBC32AEB294000C9C68A /* ItemCreationView.swift */; };
 		309EEBC62AEB29A500C9C68A /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EEBC52AEB29A500C9C68A /* Order.swift */; };
@@ -100,6 +101,8 @@
 		3054F61A2AE9925C001F9FB6 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		3054F61E2AE994BD001F9FB6 /* BankAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccount.swift; sourceTree = "<group>"; };
 		309476AF2AE9F3A700727706 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		309D9D592AF170FB006D527C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		309D9D5A2AF17158006D527C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		309EEBC12AEAC4D800C9C68A /* NewBankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankView.swift; sourceTree = "<group>"; };
 		309EEBC32AEB294000C9C68A /* ItemCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationView.swift; sourceTree = "<group>"; };
 		309EEBC52AEB29A500C9C68A /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
@@ -173,6 +176,7 @@
 			children = (
 				060E45E62AEDE8D900241951 /* TransactionViews */,
 				30B11EF22AE8842F00ACBB90 /* ContentView.swift */,
+				309D9D5A2AF17158006D527C /* Launch Screen.storyboard */,
 				3054F61A2AE9925C001F9FB6 /* ProfileView.swift */,
 				06A0519B2AF0897B00600BBC /* AccountHistoryView.swift */,
 				303365912AEA1D8700C12927 /* NewProfileView.swift */,
@@ -258,6 +262,7 @@
 		30B11EEF2AE8842F00ACBB90 /* CashFlow */ = {
 			isa = PBXGroup;
 			children = (
+				309D9D592AF170FB006D527C /* Info.plist */,
 				30B11EF02AE8842F00ACBB90 /* CashFlowApp.swift */,
 				0652F37E2AE89ED900052C8D /* Views */,
 				0652F37F2AE89EE200052C8D /* Model */,
@@ -404,6 +409,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				309D9D5B2AF17158006D527C /* Launch Screen.storyboard in Resources */,
 				30B11EF82AE8843100ACBB90 /* Preview Assets.xcassets in Resources */,
 				30B11EF52AE8843100ACBB90 /* Assets.xcassets in Resources */,
 			);
@@ -633,6 +639,7 @@
 				DEVELOPMENT_TEAM = THYYA3KQJV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CashFlow/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Need to use Bluetooth";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Need to use Bluetooth";
@@ -640,6 +647,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -667,6 +675,7 @@
 				DEVELOPMENT_TEAM = THYYA3KQJV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CashFlow/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Need to use Bluetooth";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Need to use Bluetooth";
@@ -674,6 +683,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

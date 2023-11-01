@@ -13,6 +13,7 @@ struct ConfirmationPeripheralView: View {
     @ObservedObject var device: ConnectedPeripheral
     @ObservedObject var central: CentralDevice
     @ObservedObject var order: Order
+    @Environment(\.dismiss) var dismiss
     @Binding var transaction: Transaction?
     @State var paying = false
     @State var cancelling = false
@@ -68,16 +69,23 @@ struct ConfirmationPeripheralView: View {
                     .onAppear {
                         switch result {
                         case .success:
-                            let newTransaction = Transaction(
-                                date: paidDate,
-                                order: order,
-                                payer: user.activeProfile.name,
-                                payee: order.to,
-                                type: .bill
-                            )
-                            paying = false
-                            user.takeOutFunds(order.finalCost)
-                            transaction = newTransaction
+                            if paying {
+                                let newTransaction = Transaction(
+                                    date: paidDate,
+                                    order: order,
+                                    payer: user.activeProfile.name,
+                                    payee: order.to,
+                                    type: .bill
+                                )
+                                paying = false
+                                user.takeOutFunds(order.finalCost)
+                                transaction = newTransaction
+                            }
+
+                            else {
+                                cancelling = false
+                                dismiss()
+                            }
                             return
                         case let .failure(error):
                             print("\(error)")

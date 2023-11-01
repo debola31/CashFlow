@@ -17,7 +17,6 @@ struct MenuItem: Hashable, Identifiable, Comparable, Codable {
     var cost: Double
     var count: Int = 0
 
-    static let orderSaveKey = "CashFlowOrder"
     static let exampleItems = [MenuItem(name: "Ex1", cost: 50), MenuItem(name: "Ex2", cost: 60)]
 }
 
@@ -87,7 +86,6 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
         for item in items {
             totalCost += Double(item.count) * item.cost
         }
-        save()
     }
 
     func clear() {
@@ -98,12 +96,6 @@ class Order: ObservableObject, Hashable, Codable, Identifiable {
     func loadItems(_ providedItems: [MenuItem]) {
         items = providedItems
         calculateTotal()
-    }
-
-    func save() {
-        if let encoded = try? JSONEncoder().encode(self) {
-            UserDefaults.standard.set(encoded, forKey: MenuItem.orderSaveKey)
-        }
     }
 
     static func == (lhs: Order, rhs: Order) -> Bool {

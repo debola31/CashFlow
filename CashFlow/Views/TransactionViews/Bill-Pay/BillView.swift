@@ -12,21 +12,11 @@ import SwiftUI
 
 struct BillView: View {
     @EnvironmentObject var user: User
-    @StateObject var order: Order
+    @StateObject var order = Order()
     @State var isShowingScanner = false
     @State var navPath = NavigationPath()
     @State var disableTransaction = false
     @State var transaction: Transaction?
-
-    init() {
-        if let data = UserDefaults.standard.data(forKey: MenuItem.orderSaveKey) {
-            if let decoded = try? JSONDecoder().decode(Order.self, from: data) {
-                _order = StateObject(wrappedValue: decoded)
-                return
-            }
-        }
-        _order = StateObject(wrappedValue: Order())
-    }
 
     func evaluationTransaction() {
         if order.isEmpty {
