@@ -73,9 +73,9 @@ struct QRCodeView: View {
             centralDevice.stopSearching()
             centralDevice.peripheralConnectResult = nil
             peripheralDevice.stop()
-            if let device = centralDevice.connectedPeripheral {
-                centralDevice.centralManager.cancelPeripheralConnection(device)
-            }
+//            if let device = centralDevice.connectedPeripheral {
+//                centralDevice.centralManager.cancelPeripheralConnection(device)
+//            }
         }
         .onChange(of: peripheralDevice.receivedOrderConfirmation) {
             if let confirmedOrder = peripheralDevice.receivedOrderConfirmation {

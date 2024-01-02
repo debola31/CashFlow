@@ -27,16 +27,16 @@ struct ConfirmationPeripheralView: View {
     }
 
     var body: some View {
-        Section {
-            if device.peripheral.state != .connected {
-                ForEach(central.peripherals) { discovery in
-                    ProgressView()
-                        .onAppear {
-                            central.connect(discovery)
-                        }
-                }
+        if device.peripheral.state != .connected {
+            ForEach(central.peripherals) { discovery in
+                ProgressView()
+                    .onAppear {
+                        central.connect(discovery)
+                    }
             }
+        }
 
+        Section {
             Button {
                 paying = true
                 paidDate = Date()
@@ -49,55 +49,56 @@ struct ConfirmationPeripheralView: View {
                     }
                 }
             }.disabled((device.peripheral.state != .connected) || paying || (order.totalCost > user.activeProfile.availableFunds))
-
-            Section {
-                Button {
-                    cancelling = true
-                } label: {
-                    HStack {
-                        Text("Cancel")
-                        Spacer()
-                        if cancelling {
-                            FinishCancelling(device)
-                        }
-                    }
-                }.disabled((device.peripheral.state != .connected) || cancelling)
-            }
-
-            if let result = device.writeResponseResult {
-                ProgressView()
-                    .onAppear {
-                        switch result {
-                        case .success:
-                            if paying {
-                                let newTransaction = Transaction(
-                                    date: paidDate,
-                                    order: order,
-                                    payer: user.activeProfile.name,
-                                    payee: order.to,
-                                    type: .bill
-                                )
-                                paying = false
-                                user.takeOutFunds(order.finalCost)
-                                transaction = newTransaction
-                            }
-
-                            else {
-                                cancelling = false
-                                dismiss()
-                            }
-                            return
-                        case let .failure(error):
-                            print("\(error)")
-                            return
-                        }
-                    }
-            }
-        } footer: {
+        }
+        footer: {
             if order.totalCost > user.activeProfile.availableFunds {
                 Text("Insufficient Funds")
                     .foregroundStyle(.red)
             }
+        }
+
+        Section {
+            Button {
+                cancelling = true
+            } label: {
+                HStack {
+                    Text("Cancel")
+                    Spacer()
+                    if cancelling {
+                        FinishCancelling(device)
+                    }
+                }
+            }.disabled((device.peripheral.state != .connected) || cancelling)
+        }
+
+        if let result = device.writeResponseResult {
+            ProgressView()
+                .onAppear {
+                    switch result {
+                    case .success:
+                        if paying {
+                            let newTransaction = Transaction(
+                                date: paidDate,
+                                order: order,
+                                payer: user.activeProfile.name,
+                                payee: order.to,
+                                type: .bill
+                            )
+                            paying = false
+                            user.takeOutFunds(order.finalCost)
+                            transaction = newTransaction
+                        }
+
+                        else {
+                            cancelling = false
+                            dismiss()
+                        }
+                        return
+                    case let .failure(error):
+                        print("\(error)")
+                        return
+                    }
+                }
         }
     }
 }
