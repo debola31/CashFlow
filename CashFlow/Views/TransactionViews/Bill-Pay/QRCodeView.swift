@@ -9,14 +9,14 @@ import CombineCoreBluetooth
 import SwiftUI
 
 struct QRCodeView: View {
-    @Binding var transaction: Transaction?
-    @ObservedObject var order: Order
+    @ObservedObject var bill: Bill
     @EnvironmentObject var user: User
     @EnvironmentObject var centralDevice: CentralDevice
     @StateObject var peripheralDevice = PeripheralDevice()
     @Environment(\.dismiss) var dismiss
     @State private var qrCode = UIImage()
     @State var scannedImage = false
+    @Binding var billPaid: Bool
 
     func loadCode() {
         CBUUID.service = CBUUID(string: UUID().uuidString)
@@ -25,7 +25,7 @@ struct QRCodeView: View {
 
     var body: some View {
         VStack {
-            Text(scannedImage ? "Waiting for Confirmation" : "Scan Invoice")
+            Text(scannedImage ? "Waiting for Confirmation" : "Scan Bill")
                 .font(.title)
                 .padding(.bottom, 40)
 
@@ -38,8 +38,8 @@ struct QRCodeView: View {
             Spacer()
 
             if let device = centralDevice.connectedPeripheral {
-                if transaction == nil {
-                    QRPeripheralView(device, order)
+                if bill.payer == nil {
+                    QRPeripheralView(device, bill)
                         .onAppear {
                             scannedImage = true
                         }
@@ -73,20 +73,13 @@ struct QRCodeView: View {
             centralDevice.stopSearching()
             centralDevice.peripheralConnectResult = nil
             peripheralDevice.stop()
-//            if let device = centralDevice.connectedPeripheral {
-//                centralDevice.centralManager.cancelPeripheralConnection(device)
-//            }
         }
-        .onChange(of: peripheralDevice.receivedOrderConfirmation) {
-            if let confirmedOrder = peripheralDevice.receivedOrderConfirmation {
-                if transaction == nil {
-                    user.addFunds(order.totalCost)
-                    transaction = Transaction(
-                        date: confirmedOrder.date,
-                        order: confirmedOrder.order,
-                        payer: confirmedOrder.from,
-                        payee: confirmedOrder.order.to,
-                        type: .bill)
+        .onChange(of: peripheralDevice.receivedBillConfirmation) {
+            if let confirmedBill = peripheralDevice.receivedBillConfirmation {
+                if bill.payer == nil {
+                    user.addFunds(confirmedBill.invoice.amount)
+                    bill.payer = confirmedBill.invoice.payer
+                    billPaid = true
                 }
             }
         }

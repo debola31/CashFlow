@@ -13,24 +13,43 @@ struct ConfirmationView: View {
     @StateObject var peripheralDevice = PeripheralDevice()
     @EnvironmentObject var centralDevice: CentralDevice
     @Environment(\.dismiss) var dismiss
-    @Binding var transaction: Transaction?
+    @Binding var bill: Bill?
 
     var body: some View {
         Group {
-            if let order = peripheralDevice.receivedOrder {
+            if let invoice = peripheralDevice.receivedBill {
                 Form {
-                    Section("Available Funds") {
+                    Section("Invoice") {
                         HStack {
-                            Text("Funds:")
+                            Text("From:")
                             Spacer()
-                            Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
+                            Text(invoice.payee?.name ?? "")
+                        }
+
+                        HStack {
+                            Text("Amount:")
+                            Spacer()
+                            Text(invoice.amount, format: .currency(code: "USD"))
                         }
                     }
 
-                    OrderTotalView(order: order)
+                    Section("Balance") {
+                        HStack {
+                            Text("Current Balance:")
+                            Spacer()
+                            Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
+                        }
+
+                        HStack {
+                            let newBalance = user.activeProfile.availableFunds - invoice.amount
+                            Text("After Payment:")
+                            Spacer()
+                            Text(newBalance, format: .currency(code: "USD"))
+                        }
+                    }
 
                     if let device = centralDevice.connectedPeripheral {
-                        ConfirmationPeripheralView(device, centralDevice, order, $transaction)
+                        ConfirmationPeripheralView(device, centralDevice, invoice, $bill)
 
                     } else {
                         ForEach(centralDevice.peripherals) { discovery in
@@ -41,7 +60,7 @@ struct ConfirmationView: View {
                         }
                     }
                 }
-                .navigationTitle("Confirm Order")
+                .navigationTitle("Confirm Payment")
             } else {
                 ProgressView()
             }
@@ -52,7 +71,7 @@ struct ConfirmationView: View {
         }
         .onDisappear {
             peripheralDevice.stop()
-            peripheralDevice.receivedOrder = nil
+            peripheralDevice.receivedBill = nil
         }
     }
 }

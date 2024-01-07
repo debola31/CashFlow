@@ -19,7 +19,7 @@ struct ProfileView: View {
                     Picker("Active Profile", selection: $profileSelection) {
                         ForEach(user.profiles.indices, id: \.self) { selection in
                             if selection < user.profiles.count {
-                                Text("\(user.profiles[selection].name) " + "\(user.profiles[selection].type == .individual ? "🙂" : "💼")")
+                                Text(user.profiles[selection].name)
                             }
                         }
                     }.onAppear {
@@ -44,7 +44,7 @@ struct ProfileView: View {
                     }
                 }
 
-                Section("Choose Primary Bank Account") {
+                Section("Bank Account") {
                     ForEach(user.activeProfile.bankAccounts) { bank in
                         HStack {
                             Text(bank.bankName)
@@ -57,18 +57,8 @@ struct ProfileView: View {
                         }
                     }
 
-                    Button("Add New") {
+                    Button("Add Bank") {
                         isShowingBankSheet = true
-                    }
-                }
-
-                if user.activeProfile.type == .business {
-                    Section("Service Menu") {
-                        NavigationLink {
-                            ItemCreationView()
-                        } label: {
-                            Text("Build Menu")
-                        }
                     }
                 }
             }

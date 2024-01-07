@@ -12,18 +12,17 @@ struct ConfirmationPeripheralView: View {
     @EnvironmentObject var user: User
     @ObservedObject var device: ConnectedPeripheral
     @ObservedObject var central: CentralDevice
-    @ObservedObject var order: Order
     @Environment(\.dismiss) var dismiss
-    @Binding var transaction: Transaction?
+    @ObservedObject var invoice: Bill
+    @Binding var bill: Bill?
     @State var paying = false
     @State var cancelling = false
-    @State var paidDate = Date()
 
-    init(_ peripheral: Peripheral, _ central: CentralDevice, _ order: Order, _ transaction: Binding<Transaction?>) {
+    init(_ peripheral: Peripheral, _ central: CentralDevice, _ invoice: Bill, _ bill: Binding<Bill?>) {
         self.device = .init(peripheral)
         self.central = central
-        self.order = order
-        _transaction = transaction
+        self.invoice = invoice
+        _bill = bill
     }
 
     var body: some View {
@@ -38,20 +37,21 @@ struct ConfirmationPeripheralView: View {
 
         Section {
             Button {
+                invoice.payer = Person(id: user.activeProfile.id, name: user.activeProfile.name)
+                invoice.date = Date()
                 paying = true
-                paidDate = Date()
             } label: {
                 HStack {
                     Text("Pay")
                     Spacer()
                     if paying {
-                        FinishPaying(device, user, order)
+                        FinishPaying(device, user, invoice)
                     }
                 }
-            }.disabled((device.peripheral.state != .connected) || paying || (order.totalCost > user.activeProfile.availableFunds))
+            }.disabled((device.peripheral.state != .connected) || paying || (invoice.amount > user.activeProfile.availableFunds))
         }
         footer: {
-            if order.totalCost > user.activeProfile.availableFunds {
+            if invoice.amount > user.activeProfile.availableFunds {
                 Text("Insufficient Funds")
                     .foregroundStyle(.red)
             }
@@ -77,16 +77,10 @@ struct ConfirmationPeripheralView: View {
                     switch result {
                     case .success:
                         if paying {
-                            let newTransaction = Transaction(
-                                date: paidDate,
-                                order: order,
-                                payer: user.activeProfile.name,
-                                payee: order.to,
-                                type: .bill
-                            )
                             paying = false
-                            user.takeOutFunds(order.finalCost)
-                            transaction = newTransaction
+                            user.takeOutFunds(invoice.amount)
+                            invoice.payer = Person(id: user.activeProfile.id, name: user.activeProfile.name)
+                            bill = invoice
                         }
 
                         else {
@@ -106,17 +100,16 @@ struct ConfirmationPeripheralView: View {
 struct FinishPaying: View {
     @ObservedObject var device: ConnectedPeripheral
     @ObservedObject var user: User
-    @ObservedObject var order: Order
+    @ObservedObject var invoice: Bill
 
-    init(_ device: ConnectedPeripheral, _ user: User, _ order: Order) {
+    init(_ device: ConnectedPeripheral, _ user: User, _ invoice: Bill) {
         self.device = device
         self.user = user
-        self.order = order
+        self.invoice = invoice
 
-        let confirmation = OrderConfirmation(
+        let confirmation = BillConfirmation(
             date: Date(),
-            from: user.activeProfile.name,
-            order: order
+            invoice: invoice
         )
 
         if let data = try? JSONEncoder().encode(confirmation) {

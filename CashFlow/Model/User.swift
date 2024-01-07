@@ -10,8 +10,7 @@ import SwiftUI
 class User: ObservableObject, Codable {
     let saveKey = "CashFlow"
     var id = UUID()
-    var email: String = "example@example.com"
-    var phoneNumber: Int = 1234567890
+    var paystackToken = "Bearer sk_test_73659bcb65d63dafa8c7ad9a88face58d4aec07f"
     @Published private(set) var profiles: [UserProfile] = [UserProfile.example]
     @Published private(set) var activeProfile = UserProfile.example
 
@@ -24,8 +23,6 @@ class User: ObservableObject, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         id = try container.decode(UUID.self, forKey: .id)
-        email = try container.decode(String.self, forKey: .email)
-        phoneNumber = try container.decode(Int.self, forKey: .phoneNumber)
         profiles = try container.decode([UserProfile].self, forKey: .profiles)
         activeProfile = try container.decode(UserProfile.self, forKey: .activeProfile)
     }
@@ -34,14 +31,18 @@ class User: ObservableObject, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(id, forKey: .id)
-        try container.encode(email, forKey: .email)
-        try container.encode(phoneNumber, forKey: .phoneNumber)
         try container.encode(profiles, forKey: .profiles)
         try container.encode(activeProfile, forKey: .activeProfile)
     }
 
     var hasBanks: Bool {
         !activeProfile.bankAccounts.isEmpty
+    }
+
+    func addFirstProfile(_ profile: UserProfile) {
+        profiles = [profile]
+        activeProfile = profile
+        syncProfiles()
     }
 
     func addProfile(_ profile: UserProfile) {
@@ -76,17 +77,6 @@ class User: ObservableObject, Codable {
         syncProfiles()
     }
 
-    func addMenuItem(_ item: MenuItem) {
-        activeProfile.menuItems.append(item)
-        activeProfile.menuItems.sort()
-        syncProfiles()
-    }
-
-    func removeMenuItem(_ indexSet: IndexSet) {
-        activeProfile.menuItems.remove(atOffsets: indexSet)
-        syncProfiles()
-    }
-
     func addFunds(_ funds: Double) {
         activeProfile.availableFunds += funds
         syncProfiles()
@@ -103,13 +93,13 @@ class User: ObservableObject, Codable {
         }
     }
 
-    func addTransaction(_ transaction: Transaction) {
-        activeProfile.accountHistory.append(transaction)
+    func addBill(_ bill: Bill) {
+        activeProfile.accountHistory.append(bill)
         activeProfile.accountHistory.sort()
         syncProfiles()
     }
 
-    func removeTransaction(_ indexSet: IndexSet) {
+    func removeBill(_ indexSet: IndexSet) {
         activeProfile.accountHistory.remove(atOffsets: indexSet)
         syncProfiles()
     }

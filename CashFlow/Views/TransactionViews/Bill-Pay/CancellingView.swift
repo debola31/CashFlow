@@ -1,22 +1,19 @@
 //
-//  DashQRPeripheralView.swift
+//  CancellingView.swift
 //  CashFlow
 //
-//  Created by ADEBOLA AKEREDOLU on 10/29/23.
+//  Created by ADEBOLA AKEREDOLU on 1/6/24.
 //
 
-import CombineCoreBluetooth
 import SwiftUI
 
-struct DashQRPeripheralView: View {
+struct FinishCancelling: View {
     @ObservedObject var device: ConnectedPeripheral
-    @ObservedObject var dash: Dash
+    init(_ device: ConnectedPeripheral) {
+        self.device = device
+        let cancel = Cancel()
 
-    init(_ peripheral: Peripheral, _ dash: Dash) {
-        self.device = .init(peripheral)
-        self.dash = dash
-
-        if let data = try? JSONEncoder().encode(dash) {
+        if let data = try? JSONEncoder().encode(cancel) {
             device.write(
                 data: data,
                 to: .writeResponseCharacteristic,

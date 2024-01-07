@@ -14,8 +14,8 @@ struct AccountHistoryView: View {
             Text("No Account History")
         } else {
             Form {
-                ForEach(user.activeProfile.accountHistory) { transaction in
-                    HistoryItemView(transaction: transaction)
+                ForEach(user.activeProfile.accountHistory) { bill in
+                    HistoryItemView(bill: bill)
                 }
             }
         }

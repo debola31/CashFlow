@@ -7,18 +7,10 @@
 
 import Foundation
 
-struct DashConfirmation: Identifiable, Codable, Hashable {
+struct BillConfirmation: Identifiable, Codable, Hashable {
     var id = UUID()
     var date: Date
-    var from: String
-    var dash: Dash
-}
-
-struct OrderConfirmation: Identifiable, Codable, Hashable {
-    var id = UUID()
-    var date: Date
-    var from: String
-    var order: Order
+    var invoice: Bill
 }
 
 struct Cancel: Codable, Hashable {

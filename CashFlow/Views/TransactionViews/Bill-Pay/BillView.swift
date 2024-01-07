@@ -12,26 +12,18 @@ import SwiftUI
 
 struct BillView: View {
     @EnvironmentObject var user: User
-    @StateObject var order = Order()
+    @StateObject var bill = Bill()
     @State var isShowingScanner = false
     @State var navPath = NavigationPath()
-    @State var disableTransaction = false
-    @State var transaction: Transaction?
-
-    func evaluationTransaction() {
-        if order.isEmpty {
-            disableTransaction = true
-        } else {
-            disableTransaction = false
-        }
-    }
+    @State var disableTransaction = true
+    @State var billPaid = false
 
     var body: some View {
         NavigationStack(path: $navPath) {
             Form {
                 Button("Generate Invoice Code") {
-                    order.to = user.activeProfile.name
-                    navPath.append(order)
+                    bill.payee = Person(id: user.activeProfile.id, name: user.activeProfile.name)
+                    navPath.append(bill)
                 }
                 .font(.title3)
                 .buttonStyle(.plain)
@@ -42,32 +34,29 @@ struct BillView: View {
                 .listRowBackground(Color.clear)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .disabled(disableTransaction)
-                .onAppear(perform: evaluationTransaction)
-                .onChange(of: order.isEmpty) {
-                    evaluationTransaction()
-                }
 
-                Section("Build Menu") {
-                    NavigationLink(order.items.isEmpty ? "Add to Cart" : "Edit Cart") {
-                        OrderBuilderView(order: order)
+                Section("Bill Amount") {
+                    TextField("Bill Amount", value: $bill.amount, format: .currency(code: "USD"))
+                        .onChange(of: bill.amount) {
+                            disableTransaction = bill.amount == 0
+                        }
+                    HStack {
+                        Text("Max:")
+                        Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
                     }
-                    Button("Clear Cart") {
-                        order.clear()
-                    }.disabled(order.isEmpty)
+                    .foregroundStyle(.secondary)
+                    Button("Clear") {
+                        bill.amount = 0
+                    }
                 }
-
-                OrderTotalView(order: order)
             }
             .navigationTitle("Bill")
-            .navigationDestination(for: Order.self, destination: { _ in
-                QRCodeView(transaction: $transaction, order: order)
+            .navigationDestination(for: Bill.self, destination: { _ in
+                QRCodeView(bill: bill, billPaid: $billPaid)
             })
-            .sheet(item: $transaction) { transaction in
-                ReceiptView(navPath: $navPath, transaction: transaction)
-                    .onAppear {
-                        order.clear()
-                    }
-            }
+            .sheet(isPresented: $billPaid, content: {
+                ReceiptView(navPath: $navPath, bill: bill)
+            })
         }
     }
 }

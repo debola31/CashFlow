@@ -8,74 +8,42 @@
 import SwiftUI
 
 struct HistoryItemView: View {
-    let transaction: Transaction
+    let bill: Bill
     var body: some View {
         Section {
             HStack {
                 Text("Date:")
                 Spacer()
-                Text(transaction.date, format: .dateTime)
+                Text(bill.date, format: .dateTime)
             }
 
             HStack {
-                Text("Transaction Type:")
+                Text("Reference #:")
                 Spacer()
-                Text(transaction.dash == nil ? "BillPay" : "Dash")
+                Text(bill.id.uuidString.prefix(13))
             }
 
-            if let order = transaction.order {
-                HStack {
-                    Text("Business:")
-                    Spacer()
-                    Text(transaction.payee ?? "")
-                }
-
-                HStack {
-                    Text("Client:")
-                    Spacer()
-                    Text(transaction.payer ?? "")
-                }
-
-                HStack {
-                    Text("Total:")
-                    Spacer()
-                    Text(order.finalCost, format: .currency(code: "USD"))
-                }
-
-                Section("Items") {
-                    ForEach(order.items) { item in
-                        HStack {
-                            Text("\(item.count) * \(item.name)")
-                            Spacer()
-                            Text(Double(item.count) * item.cost, format: .currency(code: "USD"))
-                        }
-                    }
-                }
+            HStack {
+                Text("Amount:")
+                Spacer()
+                Text(bill.amount, format: .currency(code: "USD"))
             }
 
-            if let dash = transaction.dash {
-                HStack {
-                    Text("From:")
-                    Spacer()
-                    Text(transaction.payer ?? "")
-                }
+            HStack {
+                Text("From:")
+                Spacer()
+                Text(bill.payer?.name ?? "")
+            }
 
-                HStack {
-                    Text("To:")
-                    Spacer()
-                    Text(transaction.payee ?? "")
-                }
-
-                HStack {
-                    Text("Amount:")
-                    Spacer()
-                    Text(dash.amount, format: .currency(code: "USD"))
-                }
+            HStack {
+                Text("To:")
+                Spacer()
+                Text(bill.payee?.name ?? "")
             }
         }
     }
 }
 
 #Preview {
-    HistoryItemView(transaction: Transaction.example)
+    HistoryItemView(bill: Bill())
 }

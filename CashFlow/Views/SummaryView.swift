@@ -8,11 +8,7 @@
 import SwiftUI
 struct SummaryView: View {
     @EnvironmentObject var user: User
-    @State var transfer: Transfer?
     @Binding var profileChange: Bool
-    var profileText: String {
-        return "\(user.activeProfile.name) " + "\(user.activeProfile.type == .individual ? "🙂" : "💼")"
-    }
 
     var body: some View {
         NavigationStack {
@@ -24,7 +20,7 @@ struct SummaryView: View {
                         HStack {
                             Text("Select Profile:")
                             Spacer()
-                            Text(profileText)
+                            Text(user.activeProfile.name)
                         }
                     }
                 }
@@ -35,11 +31,12 @@ struct SummaryView: View {
                         Spacer()
                         Text(user.activeProfile.availableFunds, format: .currency(code: "USD"))
                     }
-                    Button("Deposit") {
-                        transfer = Transfer(type: .deposit)
+                    NavigationLink("Deposit") {
+                        TransferView(mode: .deposit)
                     }
-                    Button("Withdraw") {
-                        transfer = Transfer(type: .withdrawal)
+
+                    NavigationLink("Withdraw") {
+                        TransferView(mode: .withdrawal)
                     }
                 }
 
@@ -51,9 +48,6 @@ struct SummaryView: View {
                 }
             }
             .navigationTitle("CashFlow")
-
-        }.sheet(item: $transfer) { transfer in
-            TransferView(transfer: transfer)
         }
     }
 }

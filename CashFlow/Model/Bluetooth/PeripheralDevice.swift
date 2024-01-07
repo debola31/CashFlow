@@ -12,10 +12,8 @@ class PeripheralDevice: ObservableObject {
     let peripheralManager = PeripheralManager.live()
     @Published var logs: String = ""
     @Published var advertising: Bool = false
-    @Published var receivedOrder: Order?
-    @Published var receivedDash: Dash?
-    @Published var receivedDashConfirmation: DashConfirmation?
-    @Published var receivedOrderConfirmation: OrderConfirmation?
+    @Published var receivedBill: Bill?
+    @Published var receivedBillConfirmation: BillConfirmation?
     @Published var receivedCancel: Cancel?
     var cancellables = Set<AnyCancellable>()
 
@@ -31,20 +29,12 @@ class PeripheralDevice: ObservableObject {
 
                 _ = requests.map { r in
 
-                    if let order = try? JSONDecoder().decode(Order.self, from: r.value ?? Data()) {
-                        self.receivedOrder = order
+                    if let bill = try? JSONDecoder().decode(Bill.self, from: r.value ?? Data()) {
+                        self.receivedBill = bill
                     }
 
-                    if let dash = try? JSONDecoder().decode(Dash.self, from: r.value ?? Data()) {
-                        self.receivedDash = dash
-                    }
-
-                    if let confirmation = try? JSONDecoder().decode(DashConfirmation.self, from: r.value ?? Data()) {
-                        self.receivedDashConfirmation = confirmation
-                    }
-
-                    if let confirmation = try? JSONDecoder().decode(OrderConfirmation.self, from: r.value ?? Data()) {
-                        self.receivedOrderConfirmation = confirmation
+                    if let confirmation = try? JSONDecoder().decode(BillConfirmation.self, from: r.value ?? Data()) {
+                        self.receivedBillConfirmation = confirmation
                     }
 
                     if let cancel = try? JSONDecoder().decode(Cancel.self, from: r.value ?? Data()) {

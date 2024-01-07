@@ -8,12 +8,12 @@
 import Foundation
 
 struct Transfer: Identifiable {
-    enum Types: String {
+    enum Mode: String {
         case deposit, withdrawal
     }
 
     var id = UUID()
-    var type: Types
+    var mode: Mode
     var amount: Double = 0
-    static let example = Transfer(type: .deposit)
+    static let example = Transfer(mode: .deposit)
 }

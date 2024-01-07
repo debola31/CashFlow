@@ -12,20 +12,25 @@ struct UserProfile: Identifiable, Hashable, Codable {
         lhs.id == rhs.id
     }
 
-    enum Types: String, Hashable, CaseIterable, Codable {
-        case business, individual
-    }
-
     var id = UUID()
     var name: String = ""
-    var type: Types = .individual
+    var email: String = "customer@email.com"
+    var phoneNumber: Int = 1234567890
     var availableFunds: Double = 0
-    var accountHistory: [Transaction] = []
+    var accountHistory: [Bill] = []
 
     var bankAccounts = [BankAccount]()
     var primaryAccount: BankAccount?
-    var menuItems = [MenuItem]()
 
     static let saveKey = "CashFlow"
-    static let example = UserProfile(name: "John Doe's", menuItems: MenuItem.exampleItems)
+    static let example = UserProfile(name: "John Doe's")
+}
+
+struct Person: Identifiable, Codable, Hashable {
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    let id: UUID
+    let name: String
 }

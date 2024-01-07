@@ -12,68 +12,12 @@ struct ReceiptView: View {
     @EnvironmentObject var centralDevice: CentralDevice
     @Environment(\.dismiss) var dismiss
     @Binding var navPath: NavigationPath
-    let transaction: Transaction
+    @ObservedObject var bill: Bill
     var body: some View {
         NavigationStack {
             Form {
-                HStack {
-                    Text("Date:")
-                    Spacer()
-                    Text(transaction.date, format: .dateTime)
-                }
-
-                if let order = transaction.order {
-                    HStack {
-                        Text("Business:")
-                        Spacer()
-                        Text(transaction.payee ?? "")
-                    }
-
-                    HStack {
-                        Text("Client:")
-                        Spacer()
-                        Text(transaction.payer ?? "")
-                    }
-
-                    Section {
-                        HStack {
-                            Text("Total:")
-                            Spacer()
-                            Text(order.finalCost, format: .currency(code: "USD"))
-                        }
-                    }
-
-                    Section("Items") {
-                        ForEach(order.items) { item in
-                            HStack {
-                                Text("\(item.count) * \(item.name)")
-                                Spacer()
-                                Text(Double(item.count) * item.cost, format: .currency(code: "USD"))
-                            }
-                        }
-                    }
-                }
-
-                if let dash = transaction.dash {
-                    Section("Details") {
-                        HStack {
-                            Text("From:")
-                            Spacer()
-                            Text(transaction.payer ?? "")
-                        }
-
-                        HStack {
-                            Text("To:")
-                            Spacer()
-                            Text(transaction.payee ?? "")
-                        }
-
-                        HStack {
-                            Text("Amount:")
-                            Spacer()
-                            Text(dash.amount, format: .currency(code: "USD"))
-                        }
-                    }
+                Section("Transaction Details") {
+                    HistoryItemView(bill: bill)
                 }
 
                 Button("Close") {
@@ -81,9 +25,9 @@ struct ReceiptView: View {
                     dismiss()
                 }
             }
-            .navigationTitle("\(transaction.type.rawValue.capitalized) Receipt")
+            .navigationTitle("Payment Receipt")
             .onAppear {
-                user.addTransaction(transaction)
+                user.addBill(bill)
             }
             .onDisappear {
                 centralDevice.stopSearching()

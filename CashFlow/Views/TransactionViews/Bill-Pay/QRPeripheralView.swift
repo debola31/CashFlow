@@ -10,13 +10,15 @@ import SwiftUI
 
 struct QRPeripheralView: View {
     @ObservedObject var device: ConnectedPeripheral
-    @ObservedObject var order: Order
+    @ObservedObject var bill: Bill
 
-    init(_ peripheral: Peripheral, _ order: Order) {
+    init(_ peripheral: Peripheral, _ bill: Bill) {
         self.device = .init(peripheral)
-        self.order = order
+        self.bill = bill
 
-        if let data = try? JSONEncoder().encode(order) {
+        if let data = try? JSONEncoder().encode(bill) {
+            print("sent data")
+            print(bill)
             device.write(
                 data: data,
                 to: .writeResponseCharacteristic,

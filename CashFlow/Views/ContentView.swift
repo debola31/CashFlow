@@ -23,40 +23,38 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TabView {
-            SummaryView(profileChange: $profileChange)
-                .tabItem {
-                    Label("Home", systemImage: "house")
+        if user.activeProfile == UserProfile.example {
+            NavigationStack {
+                NavigationLink("Create Profile") {
+                    NewProfileView()
+                        .navigationTitle("New Profile")
+                        .environmentObject(user)
                 }
+            }
 
-            if user.activeProfile.type == .individual {
-                PayView()
+        } else {
+            TabView {
+                SummaryView(profileChange: $profileChange)
                     .tabItem {
-                        Label("Pay", systemImage: "dollarsign")
+                        Label("Home", systemImage: "house")
                     }
 
-                DashView()
-                    .tabItem {
-                        Label("Dash", systemImage: "arrow.up.right.square.fill")
-                    }
-
-                CollectView()
-                    .tabItem {
-                        Label("Collect", systemImage: "arrow.down.right.square.fill")
-                    }
-            } else if user.activeProfile.type == .business {
                 BillView()
                     .tabItem {
-                        Label("Bill", systemImage: "dollarsign")
+                        Label("Bill", systemImage: "qrcode.viewfinder")
+                    }
+
+                PayView()
+                    .tabItem {
+                        Label("Pay", systemImage: "paperplane")
                     }
             }
-        }
-        .id(user.activeProfile.type)
-        .environmentObject(user)
-        .environmentObject(centralDevice)
-        .sheet(isPresented: $profileChange) {
-            ProfileView(profileChange: $profileChange)
-                .environmentObject(user)
+            .environmentObject(user)
+            .environmentObject(centralDevice)
+            .sheet(isPresented: $profileChange) {
+                ProfileView(profileChange: $profileChange)
+                    .environmentObject(user)
+            }
         }
     }
 }
